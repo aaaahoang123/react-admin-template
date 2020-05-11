@@ -2,4 +2,6 @@
 export const APP_PREFIX = process.env.REACT_APP_PREFIX || '';
 export const DOMAIN = process.env.REACT_APP_BASE_DOMAIN || '';
 export const API_URL = `${DOMAIN}/api`;
+export const APP_DEBUG = process.env.NODE_ENV === 'development';
+
 export const AUTH_STORAGE_KEY = process.env.REACT_APP_AUTH_STORAGE_KEY || 'token';

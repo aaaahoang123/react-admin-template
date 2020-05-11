@@ -1,7 +1,10 @@
 import axios from 'axios';
 import {notification} from 'antd';
-import {AUTH_STORAGE_KEY} from './properties';
-const DEBUG = process.env.NODE_ENV === "development";
+import {APP_DEBUG, AUTH_STORAGE_KEY} from './properties';
+
+const {loadProgressBar} = require('axios-progress-bar');
+
+loadProgressBar();
 
 // Add a request interceptor
 axios.interceptors.request.use((config) => {
@@ -11,7 +14,7 @@ axios.interceptors.request.use((config) => {
     // Do something before request is sent
     return config;
 }, (error) => {
-    if (DEBUG) {
+    if (APP_DEBUG) {
         console.log(error);
     }
     // Do something with request error
