@@ -13,13 +13,26 @@ const VehicleCategoryForm = (props: any) => {
                         // onFinish={onFinish}
                         // onFinishFailed={onFinishFailed}
                     >
-                        <Form.Item
-                            label="Con cặc"
-                            name="secret"
-                            rules={[{ required: true, message: 'Mã bảo mật không được để trống' }]}
-                        >
-                            <Input />
-                        </Form.Item>
+                        <Row gutter={10}>
+                            <Col xs={24} md={12}>
+                                <Form.Item
+                                    label="Tên nhóm xe"
+                                    name="name"
+                                    rules={[{ required: true, message: 'Mã bảo mật không được để trống' }]}
+                                >
+                                    <Input />
+                                </Form.Item>
+                            </Col>
+                            <Col xs={24} md={12}>
+                                <Form.Item
+                                    label="Số chỗ ngồi"
+                                    name="seat_quantity"
+                                    rules={[{ required: true, message: 'Mã bảo mật không được để trống' }]}
+                                >
+                                    <Input />
+                                </Form.Item>
+                            </Col>
+                        </Row>
 
                         {/*<Form.Item*/}
                         {/*    label="Password"*/}
