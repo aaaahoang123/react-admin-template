@@ -1,5 +1,5 @@
 export enum RouteEnum {
-    root = '/',
+    root = '',
     login = '/login',
     dashboard = '/dashboard',
     create_for_day = '/create-for-day',

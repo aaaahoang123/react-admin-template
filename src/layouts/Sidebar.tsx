@@ -1,15 +1,5 @@
 import {Layout, Menu} from 'antd';
 import React from 'react';
-import {
-    AppstoreOutlined,
-    BarChartOutlined,
-    CloudOutlined,
-    ShopOutlined,
-    TeamOutlined,
-    UserOutlined,
-    UploadOutlined,
-    VideoCameraOutlined,
-} from '@ant-design/icons';
 import {IndexState} from '../core/index.state';
 import {connect} from 'react-redux';
 import {Link} from 'react-router-dom';

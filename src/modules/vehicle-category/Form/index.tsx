@@ -1,5 +1,4 @@
 import React from 'react';
-import {FC, Fragment} from 'react';
 import {Button, Card, Col, Form, Input, Row} from 'antd';
 
 const VehicleCategoryForm = (props: any) => {
