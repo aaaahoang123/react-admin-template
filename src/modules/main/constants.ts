@@ -1,1 +1,2 @@
 export const APP_LOGIN = 'APP_LOGIN';
+export const APP_LOGIN_COMPLETE = 'APP_LOGIN_COMPLETE';

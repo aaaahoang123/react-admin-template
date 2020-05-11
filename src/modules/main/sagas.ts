@@ -10,23 +10,30 @@ import {RouteEnum} from '../../core/route.enum';
 import { push } from 'connected-react-router';
 import {FETCH_AUTH_DATA} from '../../App.constants';
 import {safeCall} from '../../utils/safe-call';
+import {loginComplete} from './actions';
+import {message} from 'antd';
 
 function* login(action: ActionPayload) {
-    const response: Rest<User> = yield call(AuthService.login, action.payload);
-    localStorage.setItem(AUTH_STORAGE_KEY, response.data.access_token || '');
-    yield put(appUserChange(response.data));
-    yield put(push(RouteEnum.dashboard));
+    try {
+        const response: Rest<User> = yield call(AuthService.login, action.payload);
+        localStorage.setItem(AUTH_STORAGE_KEY, response.data.access_token || '');
+        yield put(appUserChange(response.data));
+        yield put(push(RouteEnum.dashboard));
+        message.success('Đăng nhập thành công! Chuyển hướng về dashboard!');
+    } catch (e) {
+    } finally {
+        yield put(loginComplete());
+    }
 }
 
 function* fetchUserData() {
     const response: Rest<User> = yield call(AuthService.userData);
-    // console.log(response)
     yield put(appUserChange(response.data));
 }
 
 function* MainSaga() {
     yield all([
-        takeLatest(APP_LOGIN, safeCall(login)),
+        takeLatest(APP_LOGIN, login),
         takeLatest(FETCH_AUTH_DATA, safeCall(fetchUserData))
     ])
 }
