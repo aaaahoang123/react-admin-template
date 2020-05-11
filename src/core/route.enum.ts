@@ -16,6 +16,7 @@ export enum RouteEnum {
     operators = '/operators',
     drivers = '/drivers',
     vehicles = '/vehicles',
+    vehicle_categories = '/vehicle-categories',
     create_category = '/create-category',
     edit_category = '/edit-category',
     list_categories = '/list-categories',

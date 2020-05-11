@@ -13,8 +13,10 @@ import {
 import {IndexState} from '../core/index.state';
 import {connect} from 'react-redux';
 import {Link} from 'react-router-dom';
+import Routes from '../core/index.router';
 
 const {Sider} = Layout;
+const { SubMenu, Item } = Menu;
 export interface SidebarProps {
     sidebarCollapse: boolean;
 }
@@ -34,32 +36,28 @@ function Sidebar({sidebarCollapse}: SidebarProps) {
             // collapsed={sidebarCollapse}
         >
             <Menu theme="light" mode="inline" defaultSelectedKeys={['4']}>
-                <Menu.Item key="1">
-                    <UserOutlined />
-                    <Link to={'/login'}>Login</Link>
-                </Menu.Item>
-                <Menu.Item key="2">
-                    <VideoCameraOutlined />
-                    <Link to={'/dashboard'}>Login 2</Link>
-                </Menu.Item>
-                <Menu.Item key="3" icon={<UploadOutlined />}>
-                    nav 3
-                </Menu.Item>
-                <Menu.Item key="4" icon={<BarChartOutlined />}>
-                    nav 4
-                </Menu.Item>
-                <Menu.Item key="5" icon={<CloudOutlined />}>
-                    nav 5
-                </Menu.Item>
-                <Menu.Item key="6" icon={<AppstoreOutlined />}>
-                    nav 6
-                </Menu.Item>
-                <Menu.Item key="7" icon={<TeamOutlined />}>
-                    nav 7
-                </Menu.Item>
-                <Menu.Item key="8" icon={<ShopOutlined />}>
-                    nav 8
-                </Menu.Item>
+                {
+                    Routes.filter(route => route.data?.display).map(route => {
+                        return route?.children?.length
+                            ? (
+                                <SubMenu key={route.path} icon={route.data?.icon ? <route.data.icon /> : null} title={route.data?.title}>
+                                    {
+                                        route.children.filter(child => child.data?.display).map(child => (
+                                            <Item key={route.path + child.path}>
+                                                <Link to={route.path + child.path}>{child.data?.title}</Link>
+                                            </Item>
+                                        ))
+                                    }
+                                </SubMenu>
+                            )
+                            : (
+                                <Item key={route.path} title={route.data?.title}>
+                                    {route.data?.icon ? <route.data.icon /> : null}
+                                    <Link to={route.path} >{route.data?.title}</Link>
+                                </Item>
+                            )
+                    })
+                }
             </Menu>
         </Sider>
     );
