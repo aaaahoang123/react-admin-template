@@ -12,11 +12,13 @@ function appReducer(state = new AppState(), action: ActionPayload): AppState {
             };
         case WINDOW_SIZE_CHANGE:
             return reduceWindowSize(state, action);
+        // case FETCH_AUTH_DATA:
+        //     return {...state, authChecked: true};
         case APP_USER_CHANGED:
             return {
                 ...state,
                 user: action.payload,
-                authChecked: !!action.payload
+                authenticated: !!action.payload
             };
         default:
             return state;

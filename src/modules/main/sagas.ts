@@ -21,6 +21,7 @@ function* login(action: ActionPayload) {
         yield put(push(RouteEnum.dashboard));
         message.success('Đăng nhập thành công! Chuyển hướng về dashboard!');
     } catch (e) {
+        yield put(appUserChange());
     } finally {
         yield put(loginComplete());
     }

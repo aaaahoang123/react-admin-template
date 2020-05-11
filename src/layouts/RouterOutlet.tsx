@@ -1,8 +1,9 @@
 import {Route} from 'react-router';
 import React from "react";
-import IndexRouter from '../core/index.router';
 import {Routes} from '../entities/common/route';
 import PrivateRoute from '../common/components/PrivateRoute';
+import {IndexState} from '../core/index.state';
+import {connect} from 'react-redux';
 
 const Render = ({routes, parentPath = ''}: { routes?: Routes, parentPath?: string }) => {
     return (
@@ -24,7 +25,7 @@ const Render = ({routes, parentPath = ''}: { routes?: Routes, parentPath?: strin
                     const path = parentPath + route.path;
 
                     return (
-                        <R key={path} path={path}>
+                        <R key={path} path={path} route={route} isActive={route.isActive}>
                             {
                                 content
                             }
@@ -39,14 +40,20 @@ const Render = ({routes, parentPath = ''}: { routes?: Routes, parentPath?: strin
     );
 }
 
-function RouterOutlet() {
+function RouterOutlet({routes}: {routes?: Routes}) {
     return (
         <>
             {
-                <Render routes={IndexRouter}/>
+                <Render routes={routes}/>
             }
         </>
     );
 }
 
-export default RouterOutlet;
+const mapStateToProps = ({routes}: IndexState) => ({
+    routes
+});
+
+const connected = connect(mapStateToProps, null)(RouterOutlet);
+
+export default connected;

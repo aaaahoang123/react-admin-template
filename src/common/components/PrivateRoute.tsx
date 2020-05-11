@@ -5,32 +5,33 @@ import {connect} from 'react-redux';
 import {User} from '../../entities/api/user';
 import {DOMAIN} from '../../core/properties';
 import {fetchAuthData} from '../../App.actions';
+import {Route as RouteType} from '../../entities/common/route';
 
 interface PrivateRouteProps {
     user?: User;
-    authChecked: boolean;
+    authenticated: boolean;
     fetchAuthData: typeof fetchAuthData;
     pathname: string;
     path: string;
+    route: RouteType;
+    isActive: boolean;
 }
 
-function PrivateRoute({ children, user, fetchAuthData, authChecked, pathname, path, ...rest }: PrivateRouteProps & any): any {
-    if (authChecked && !user) {
+function PrivateRoute({ children, user, fetchAuthData, authenticated, path, route, isActive, ...rest }: PrivateRouteProps & any): any {
+    if (authenticated && !user) {
         window.location.href = DOMAIN + '/authentication';
         return;
     }
     /**
-     * Because all the PrivateRoute has render when the app bootstrap
-     * So we must compare the pathname from router with the path of this PrivateRoute
-     * If they're equal, so the Route is activating and we can trigger the actions to fetch userData
+     * Just dispatch the action to fetch authData when this route is activated.
      */
-    if (pathname === path && !authChecked) {
+    if (!authenticated && isActive) {
         fetchAuthData();
     }
     return (
         <Route {...rest} path={path}
                render={({ location }) =>
-                   authChecked ? (
+                   authenticated ? (
                        children
                    ) : (
                        <div>Loading component</div>
@@ -49,8 +50,8 @@ function PrivateRoute({ children, user, fetchAuthData, authChecked, pathname, pa
 
 const mapStateToProps = ({app, router}: IndexState) => ({
     user: app.user,
-    authChecked: app.authChecked,
-    pathname: router.location.pathname
+    pathname: router.location.pathname,
+    authenticated: app.authenticated
 });
 
 const connected = connect(mapStateToProps, {fetchAuthData})(PrivateRoute);

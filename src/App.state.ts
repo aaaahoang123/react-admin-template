@@ -6,5 +6,5 @@ export class AppState {
     windowHeight: number = 0;
     isMobile: boolean = false;
     user?: User;
-    authChecked = false;
+    authenticated = false;
 }

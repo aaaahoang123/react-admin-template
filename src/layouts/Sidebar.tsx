@@ -3,15 +3,18 @@ import React from 'react';
 import {IndexState} from '../core/index.state';
 import {connect} from 'react-redux';
 import {Link} from 'react-router-dom';
-import Routes from '../core/index.router';
+import {Routes} from '../entities/common/route';
+// import Routes from '../core/index.router';
 
 const {Sider} = Layout;
 const { SubMenu, Item } = Menu;
 export interface SidebarProps {
     sidebarCollapse: boolean;
+    pathname: string;
+    routes: Routes
 }
 
-function Sidebar({sidebarCollapse}: SidebarProps) {
+function Sidebar({sidebarCollapse, pathname, routes}: SidebarProps) {
     return (
         <Sider
             style={{
@@ -25,9 +28,9 @@ function Sidebar({sidebarCollapse}: SidebarProps) {
             width='100%'
             // collapsed={sidebarCollapse}
         >
-            <Menu theme="light" mode="inline" defaultSelectedKeys={['4']}>
+            <Menu theme="light" mode="inline" defaultSelectedKeys={[pathname]} defaultOpenKeys={routes.map(route => route.path)}>
                 {
-                    Routes.filter(route => route.data?.display).map(route => {
+                    routes.filter(route => route.data?.display).map(route => {
                         return route?.children?.length
                             ? (
                                 <SubMenu key={route.path} icon={route.data?.icon ? <route.data.icon /> : null} title={route.data?.title}>
@@ -53,8 +56,10 @@ function Sidebar({sidebarCollapse}: SidebarProps) {
     );
 }
 
-const mapStateToProps = ({app}: IndexState): SidebarProps => ({
-    sidebarCollapse: app.sidebarCollapse
+const mapStateToProps = ({app, router, routes}: IndexState): SidebarProps => ({
+    sidebarCollapse: app.sidebarCollapse,
+    pathname: router.location.pathname,
+    routes: routes
 })
 
 const connected = connect(mapStateToProps)(Sidebar)

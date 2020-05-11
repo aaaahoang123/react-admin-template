@@ -3,10 +3,12 @@ import app from '../App.reducer';
 import main from '../modules/main/reducer';
 import {history} from './history';
 import { connectRouter } from 'connected-react-router';
+import routes from './routes.reducer';
 
 const IndexReducer = combineReducers({
     app,
     main,
+    routes,
     router: connectRouter(history),
 })
 

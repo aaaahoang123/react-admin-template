@@ -1,5 +1,5 @@
 export interface RouteData {
-    title: string;
+    title?: string;
     icon?: any;
     role?: any;
     display?: boolean;

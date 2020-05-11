@@ -33,6 +33,7 @@ const IndexRouter: Routes = [
             {
                 path: RouteEnum.create,
                 component: VehicleCategoryForm,
+                protected: true,
                 data: {
                     title: 'Tạo nhóm xe',
                     display: true
