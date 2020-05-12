@@ -1,38 +1,40 @@
 import React from 'react';
-import {Col, Form, Input, InputNumber, Row} from 'antd';
 import {IndexState} from '../../../../core/index.state';
 import {connect} from 'react-redux';
+import {Col, Row} from 'antd';
 
 interface SeatGridProps {
-    cols?: number;
-    rows?: number;
+    matrix?: number[][];
+    cols: number;
 }
 
-function SeatGrid({cols, rows}: SeatGridProps) {
-    console.log({cols, rows});
-    const handleChange = (e: any) => {
-        console.log(e);
-    }
+function SeatGrid({matrix, cols}: SeatGridProps) {
+    const column = Math.floor(24 / cols);
     return (
         <>
-            <Form
-                layout="vertical"
-                name="basic"
-                initialValues={{cols, rows}}
-                // onFinishFailed={onFinishFailed}
-            >
-                <Row gutter={10}>
-
-                </Row>
-            </Form>
+            {
+                matrix?.map((row, index) => (
+                    <Row gutter={8} key={`seat_grid_row_${index}`}>
+                        {
+                            row.map(col => (
+                                <Col xs={column} key={`seat_grid_item_${col}`}>
+                                    {
+                                        col
+                                    }
+                                </Col>
+                            ))
+                        }
+                    </Row>
+                ))
+            }
         </>
     );
 }
 
 const mapStateToProps = ({vehicleCategory}: IndexState) => {
     return {
-        cols: vehicleCategory.form.cols,
-        rows: vehicleCategory.form.rows
+        matrix: vehicleCategory.form.matrix,
+        cols: vehicleCategory.form.cols
     };
 };
 

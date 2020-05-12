@@ -1,23 +1,33 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {Button, Card, Col, Form, Input, InputNumber, Row} from 'antd';
-import SeatGrid from './parts/SeatGrid';
 import {IndexState} from '../../../core/index.state';
 import {connect} from 'react-redux';
-import {FieldData} from 'rc-field-form/lib/interface';
-import {seatGridChange} from '../actions';
+import {vehicleCategoryFormChange, vehicleCategoryFormIdChange} from '../actions';
+import {VehicleCategoryFormState} from './state';
+import SeatGrid from './parts/SeatGrid';
 
 interface VehicleCategoryFormProps {
-    cols?: number;
-    rows?: number;
-    seatGridChange: typeof seatGridChange;
+    formData: VehicleCategoryFormState;
+    vehicleCategoryFormChange: typeof vehicleCategoryFormChange;
+    vehicleCategoryFormIdChange: typeof vehicleCategoryFormIdChange;
+    categoryId?: number;
 }
 
-const VehicleCategoryForm = ({cols, rows, seatGridChange}: VehicleCategoryFormProps) => {
+const VehicleCategoryForm = ({formData, vehicleCategoryFormChange, categoryId, vehicleCategoryFormIdChange}: VehicleCategoryFormProps) => {
+    const [form] = Form.useForm();
+    // vehicleCategoryFormChange(new VehicleCategoryFormState(), true);
+    useEffect(() => {
+        form.setFieldsValue(formData);
+    });
+
+    useEffect(() => {
+        vehicleCategoryFormIdChange(categoryId);
+        // eslint-disable-next-line
+    }, []);
+
     const onFinish = (values: any) => console.log(values);
-    const onChange = (changedFields: FieldData[], allFields: FieldData[]) => {
-        changedFields.filter(field => {
-            return ['cols', 'rows'].includes('cols');
-        } )
+    const onChange = (changedValues: any, allValues: any) => {
+        vehicleCategoryFormChange(changedValues);
     };
 
     return (
@@ -27,9 +37,10 @@ const VehicleCategoryForm = ({cols, rows, seatGridChange}: VehicleCategoryFormPr
                     <Form
                         layout="vertical"
                         name="basic"
-                        initialValues={{ cols, rows }}
+                        initialValues={formData}
                         onFinish={onFinish}
-                        onFieldsChange={onChange}
+                        onValuesChange={onChange}
+                        form={form}
                         // onFinishFailed={onFinishFailed}
                     >
                         <Row gutter={10}>
@@ -60,6 +71,7 @@ const VehicleCategoryForm = ({cols, rows, seatGridChange}: VehicleCategoryFormPr
                                     name="cols"
                                 >
                                     <InputNumber min={1}
+                                                 max={8}
                                                  placeholder="Nhập số dãy ghế"
                                                  className="w-100" />
                                 </Form.Item>
@@ -75,7 +87,7 @@ const VehicleCategoryForm = ({cols, rows, seatGridChange}: VehicleCategoryFormPr
                                 </Form.Item>
                             </Col>
                         </Row>
-                        {/*<SeatGrid />*/}
+                        <SeatGrid />
 
                         {/*<Form.Item*/}
                         {/*    label="Password"*/}
@@ -105,11 +117,10 @@ const VehicleCategoryForm = ({cols, rows, seatGridChange}: VehicleCategoryFormPr
 
 const mapStateToProps = ({vehicleCategory}: IndexState) => {
     return {
-        cols: vehicleCategory.form.cols,
-        rows: vehicleCategory.form.rows
+        formData: vehicleCategory.form
     };
 };
 
-const connected = connect(mapStateToProps, {seatGridChange})(VehicleCategoryForm);
+const connected = connect(mapStateToProps, {vehicleCategoryFormChange, vehicleCategoryFormIdChange})(VehicleCategoryForm);
 
 export default connected;
