@@ -6,7 +6,7 @@ import {appUserChange} from '../../App.actions';
 import {Rest} from '../../entities/common/rest';
 import {User} from '../../entities/api/user';
 import {AUTH_STORAGE_KEY} from '../../core/properties';
-import {RouteEnum} from '../../core/route.enum';
+import {RouteEnum} from '../../common/enums/route.enum';
 import { push } from 'connected-react-router';
 import {FETCH_AUTH_DATA} from '../../App.constants';
 import {safeCall} from '../../utils/safe-call';

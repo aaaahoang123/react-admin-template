@@ -1,5 +1,5 @@
 import {Routes} from '../entities/common/route';
-import {RouteEnum} from './route.enum';
+import {RouteEnum} from '../common/enums/route.enum';
 import Login from '../modules/main/Login';
 import Dashboard from '../modules/main/Dashboard';
 import VehicleCategoryForm from '../modules/vehicle-category/Form';
