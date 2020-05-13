@@ -26,10 +26,10 @@ const VehicleCategoryForm = (
         vehicleCategoryFormSubmit
     }: VehicleCategoryFormProps) => {
     const [form] = Form.useForm();
-    // vehicleCategoryFormChange(new VehicleCategoryFormState(), true);
     useEffect(() => {
         form.setFieldsValue(formData);
-    });
+        // eslint-disable-next-line
+    }, [formData.cols, formData.rows]);
 
     useEffect(() => {
         vehicleCategoryFormIdChange(categoryId);
@@ -38,9 +38,6 @@ const VehicleCategoryForm = (
 
     const onFinish = (values: any) => {
         vehicleCategoryFormSubmit(formData);
-    };
-    const onChange = (changedValues: any, allValues: any) => {
-        vehicleCategoryFormChange(changedValues);
     };
 
     return (
@@ -52,7 +49,7 @@ const VehicleCategoryForm = (
                         name="basic"
                         initialValues={formData}
                         onFinish={onFinish}
-                        onValuesChange={onChange}
+                        onValuesChange={vehicleCategoryFormChange as any}
                         form={form}
                         // onFinishFailed={onFinishFailed}
                     >
