@@ -18,3 +18,34 @@ code {
 .w-100 {
   width: 100% !important;
 }
+
+@m-pParam: 0.25;
+.margin-variation(@index) when (@index <= 5) {
+  .margin-variation((@index + 1));
+
+  .mt-@{index}, .my-@{index} {
+    margin-top: (@m-pParam * @index * 1rem)!important;
+  }
+  .mb-@{index}, .my-@{index} {
+    margin-bottom: (@m-pParam * @index * 1rem)!important;
+  }
+  .mr-@{index}, .mx-@{index} {
+    margin-right: (@m-pParam * @index * 1rem)!important;
+  }
+  .ml-@{index}, .mx-@{index} {
+    margin-left: (@m-pParam * @index * 1rem)!important;
+  }
+  .pt-@{index}, .py-@{index} {
+    padding-top: (@m-pParam * @index * 1rem)!important;
+  }
+  .pb-@{index}, .py-@{index} {
+    padding-bottom: (@m-pParam * @index * 1rem)!important;
+  }
+  .pr-@{index}, .px-@{index} {
+    padding-right: (@m-pParam * @index * 1rem)!important;
+  }
+  .pl-@{index}, .px-@{index} {
+    padding-left: (@m-pParam * @index * 1rem)!important;
+  }
+}
+.margin-variation(0);

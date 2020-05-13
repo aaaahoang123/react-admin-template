@@ -17,4 +17,5 @@ export class VehicleCategoryFormState {
     cols = 4;
     rows = 5;
     matrix: number[][] = [];
+    formSubmitting = false;
 }

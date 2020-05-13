@@ -2,6 +2,7 @@ import React from 'react';
 import {IndexState} from '../../../../core/index.state';
 import {connect} from 'react-redux';
 import {Col, Row} from 'antd';
+import SeatItem from './SeatItem';
 
 interface SeatGridProps {
     matrix?: number[][];
@@ -14,12 +15,12 @@ function SeatGrid({matrix, cols}: SeatGridProps) {
         <>
             {
                 matrix?.map((row, index) => (
-                    <Row gutter={8} key={`seat_grid_row_${index}`}>
+                    <Row gutter={8} key={`seat_grid_row_${index}`} className={'mt-1 mb-1'}>
                         {
                             row.map(col => (
                                 <Col xs={column} key={`seat_grid_item_${col}`}>
                                     {
-                                        col
+                                        <SeatItem seatIndex={col} />
                                     }
                                 </Col>
                             ))

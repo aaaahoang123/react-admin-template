@@ -2,18 +2,29 @@ import React, {useEffect} from 'react';
 import {Button, Card, Col, Form, Input, InputNumber, Row} from 'antd';
 import {IndexState} from '../../../core/index.state';
 import {connect} from 'react-redux';
-import {vehicleCategoryFormChange, vehicleCategoryFormIdChange} from '../actions';
+import {vehicleCategoryFormChange, vehicleCategoryFormIdChange, vehicleCategoryFormSubmit} from '../actions';
 import {VehicleCategoryFormState} from './state';
 import SeatGrid from './parts/SeatGrid';
+import {
+    SaveOutlined
+} from '@ant-design/icons';
 
 interface VehicleCategoryFormProps {
     formData: VehicleCategoryFormState;
     vehicleCategoryFormChange: typeof vehicleCategoryFormChange;
     vehicleCategoryFormIdChange: typeof vehicleCategoryFormIdChange;
+    vehicleCategoryFormSubmit: typeof vehicleCategoryFormSubmit;
     categoryId?: number;
 }
 
-const VehicleCategoryForm = ({formData, vehicleCategoryFormChange, categoryId, vehicleCategoryFormIdChange}: VehicleCategoryFormProps) => {
+const VehicleCategoryForm = (
+    {
+        formData,
+        vehicleCategoryFormChange,
+        categoryId,
+        vehicleCategoryFormIdChange,
+        vehicleCategoryFormSubmit
+    }: VehicleCategoryFormProps) => {
     const [form] = Form.useForm();
     // vehicleCategoryFormChange(new VehicleCategoryFormState(), true);
     useEffect(() => {
@@ -25,7 +36,9 @@ const VehicleCategoryForm = ({formData, vehicleCategoryFormChange, categoryId, v
         // eslint-disable-next-line
     }, []);
 
-    const onFinish = (values: any) => console.log(values);
+    const onFinish = (values: any) => {
+        vehicleCategoryFormSubmit(formData);
+    };
     const onChange = (changedValues: any, allValues: any) => {
         vehicleCategoryFormChange(changedValues);
     };
@@ -48,9 +61,9 @@ const VehicleCategoryForm = ({formData, vehicleCategoryFormChange, categoryId, v
                                 <Form.Item
                                     label="Tên nhóm xe"
                                     name="name"
-                                    rules={[{ required: true, message: 'Tên nhóm xe' }]}
+                                    rules={[{required: true, message: 'Tên nhóm xe'}]}
                                 >
-                                    <Input placeholder={'Nhập tên nhóm xe'} />
+                                    <Input placeholder={'Nhập tên nhóm xe'}/>
                                 </Form.Item>
                             </Col>
                             <Col xs={24} md={12}>
@@ -58,11 +71,11 @@ const VehicleCategoryForm = ({formData, vehicleCategoryFormChange, categoryId, v
                                     label="Số chỗ ngồi"
                                     name="seat_quantity"
                                     rules={[
-                                        { required: true, message: 'Hãy nhập số chỗ ngồi' },
-                                        { type: 'number', message: 'Số chỗ ngồi phải là số'}
+                                        {required: true, message: 'Hãy nhập số chỗ ngồi'},
+                                        {type: 'number', message: 'Số chỗ ngồi phải là số'}
                                     ]}
                                 >
-                                    <InputNumber min={1} className={'w-100'} placeholder={'Nhập số chỗ ngồi'} />
+                                    <InputNumber min={1} className={'w-100'} placeholder={'Nhập số chỗ ngồi'}/>
                                 </Form.Item>
                             </Col>
                             <Col xs={24} md={12}>
@@ -73,7 +86,7 @@ const VehicleCategoryForm = ({formData, vehicleCategoryFormChange, categoryId, v
                                     <InputNumber min={1}
                                                  max={8}
                                                  placeholder="Nhập số dãy ghế"
-                                                 className="w-100" />
+                                                 className="w-100"/>
                                 </Form.Item>
                             </Col>
                             <Col xs={24} md={12}>
@@ -87,7 +100,7 @@ const VehicleCategoryForm = ({formData, vehicleCategoryFormChange, categoryId, v
                                 </Form.Item>
                             </Col>
                         </Row>
-                        <SeatGrid />
+                        <SeatGrid/>
 
                         {/*<Form.Item*/}
                         {/*    label="Password"*/}
@@ -102,10 +115,12 @@ const VehicleCategoryForm = ({formData, vehicleCategoryFormChange, categoryId, v
                         {/*</Form.Item>*/}
 
                         <Form.Item>
-                            <Button type="primary" htmlType="submit"
-                                    // loading={requesting}
+                            <Button type="primary"
+                                    htmlType="submit"
+                                    loading={formData.formSubmitting}
+                                    icon={<SaveOutlined />}
                             >
-                                Đăng nhập
+                                Lưu
                             </Button>
                         </Form.Item>
                     </Form>
@@ -121,6 +136,10 @@ const mapStateToProps = ({vehicleCategory}: IndexState) => {
     };
 };
 
-const connected = connect(mapStateToProps, {vehicleCategoryFormChange, vehicleCategoryFormIdChange})(VehicleCategoryForm);
+const connected = connect(mapStateToProps, {
+    vehicleCategoryFormChange,
+    vehicleCategoryFormIdChange,
+    vehicleCategoryFormSubmit
+})(VehicleCategoryForm);
 
 export default connected;

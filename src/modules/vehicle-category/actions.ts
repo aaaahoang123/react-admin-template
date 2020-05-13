@@ -1,10 +1,19 @@
-import {VEHICLE_CATEGORY_FORM_DATA_CHANGE, VEHICLE_CATEGORY_FORM_ID_CHANGE} from './constants';
+import {
+    VEHICLE_CATEGORY_FORM_DATA_CHANGE,
+    VEHICLE_CATEGORY_FORM_ID_CHANGE,
+    VEHICLE_CATEGORY_FORM_SUBMIT,
+    VEHICLE_CATEGORY_FORM_SUBMITTED, VEHICLE_CATEGORY_LIST_LOADED,
+    VEHICLE_CATEGORY_LIST_REFRESH,
+    VEHICLE_SEAT_FORM_DATA_CHANGE
+} from './constants';
 import {ActionPayload} from '../../entities/common/action-payload';
-import {VehicleCategoryFormState} from './Form/state';
+import {VehicleCategoryFormState, VehicleSeatFormData} from './Form/state';
+import {VehicleCategory} from '../../entities/api/vehicle-category';
+import {createAction} from '../../utils/create-action';
 
-export type ChangeSeatGridPayload = VehicleCategoryFormState & {reset?: boolean};
+export type ChangeSeatGridPayload = Partial<VehicleCategoryFormState> & { reset?: boolean };
 
-export function vehicleCategoryFormChange(formData: VehicleCategoryFormState, reset?: boolean): ActionPayload<ChangeSeatGridPayload> {
+export function vehicleCategoryFormChange(formData: Partial<VehicleCategoryFormState>, reset?: boolean): ActionPayload<ChangeSeatGridPayload> {
     return {
         type: VEHICLE_CATEGORY_FORM_DATA_CHANGE,
         payload: {
@@ -14,9 +23,14 @@ export function vehicleCategoryFormChange(formData: VehicleCategoryFormState, re
     };
 }
 
-export function vehicleCategoryFormIdChange(id?: number): ActionPayload<number | undefined> {
-    return {
-        type: VEHICLE_CATEGORY_FORM_ID_CHANGE,
-        payload: id
-    };
-}
+export const vehicleCategoryFormIdChange = createAction<number>(VEHICLE_CATEGORY_FORM_ID_CHANGE);
+
+export const vehicleSeatFormDataChange = createAction<Partial<VehicleSeatFormData>, number>(VEHICLE_SEAT_FORM_DATA_CHANGE);
+
+export const vehicleCategoryFormSubmit = createAction<VehicleCategoryFormState>(VEHICLE_CATEGORY_FORM_SUBMIT);
+
+export const vehicleCategoryFormSubmitted = createAction(VEHICLE_CATEGORY_FORM_SUBMITTED);
+
+export const vehicleCategoriesListRefresh = createAction(VEHICLE_CATEGORY_LIST_REFRESH);
+
+export const vehicleCategoriesListLoaded = createAction<VehicleCategory[]>(VEHICLE_CATEGORY_LIST_LOADED);

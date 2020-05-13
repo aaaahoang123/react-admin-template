@@ -4,10 +4,8 @@ import Login from '../modules/main/Login';
 import Dashboard from '../modules/main/Dashboard';
 import VehicleCategoryForm from '../modules/vehicle-category/Form';
 import {AuthScope} from '../entities/enum/auth-scope';
-import {
-    GroupOutlined,
-    DashboardOutlined
-} from '@ant-design/icons/';
+import {DashboardOutlined, GroupOutlined} from '@ant-design/icons/';
+import VehicleCategoriesList from '../modules/vehicle-category/List';
 
 const IndexRouter: Routes = [
     {
@@ -30,6 +28,15 @@ const IndexRouter: Routes = [
             role: AuthScope.CAN_MANAGE_VEHICLE_CATEGORIES
         },
         children: [
+            {
+                path: RouteEnum.list,
+                component: VehicleCategoriesList,
+                protected: true,
+                data: {
+                    title: 'Nhóm xe',
+                    display: true
+                }
+            },
             {
                 path: RouteEnum.create,
                 component: VehicleCategoryForm,
