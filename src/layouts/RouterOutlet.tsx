@@ -51,7 +51,7 @@ function RouterOutlet({routes}: {routes?: Routes}) {
 }
 
 const mapStateToProps = ({routes}: IndexState) => ({
-    routes
+    routes: routes.routes
 });
 
 const connected = connect(mapStateToProps, null)(RouterOutlet);

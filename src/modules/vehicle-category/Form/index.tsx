@@ -8,6 +8,8 @@ import SeatGrid from './parts/SeatGrid';
 import {
     SaveOutlined
 } from '@ant-design/icons';
+import StatusSelector from '../../../common/components/StatusSelector';
+import {CommonStatus} from '../../../common/enums/common-status.enum';
 
 interface VehicleCategoryFormProps {
     formData: VehicleCategoryFormState;
@@ -29,7 +31,7 @@ const VehicleCategoryForm = (
     useEffect(() => {
         form.setFieldsValue(formData);
         // eslint-disable-next-line
-    }, [formData.cols, formData.rows]);
+    }, [formData]);
 
     useEffect(() => {
         vehicleCategoryFormIdChange(categoryId);
@@ -40,6 +42,8 @@ const VehicleCategoryForm = (
         vehicleCategoryFormSubmit(formData);
     };
 
+    const onValueChange = (value: Partial<VehicleCategoryFormState>) => vehicleCategoryFormChange(value);
+
     return (
         <Card bordered={false}>
             <Row justify="center">
@@ -49,7 +53,7 @@ const VehicleCategoryForm = (
                         name="basic"
                         initialValues={formData}
                         onFinish={onFinish}
-                        onValuesChange={vehicleCategoryFormChange as any}
+                        onValuesChange={onValueChange}
                         form={form}
                         // onFinishFailed={onFinishFailed}
                     >
@@ -75,6 +79,25 @@ const VehicleCategoryForm = (
                                     <InputNumber min={1} className={'w-100'} placeholder={'Nhập số chỗ ngồi'}/>
                                 </Form.Item>
                             </Col>
+
+                            {
+                                categoryId
+                                    ? <Col xs={24} md={12}>
+                                        <Form.Item
+                                            label="Trạng thái"
+                                            name="status"
+                                            rules={[
+                                                {required: true, message: 'Hãy chọn trạng thái'},
+                                            ]}
+                                        >
+                                            <StatusSelector status={CommonStatus} />
+                                        </Form.Item>
+                                    </Col>
+                                    : null
+                            }
+                        </Row>
+
+                        <Row gutter={10}>
                             <Col xs={24} md={12}>
                                 <Form.Item
                                     label="Số dãy"

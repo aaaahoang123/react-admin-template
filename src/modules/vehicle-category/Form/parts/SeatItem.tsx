@@ -35,8 +35,10 @@ function seatItemComponent({seatIndex, seat, vehicleSeatFormDataChange}: SeatIte
                     <Col xs={24} className="mb-1">
                         <Checkbox
                             onChange={onSelectableChange}
-                            defaultChecked={seat?.selectable}
-                        >Có thể chọn</Checkbox>
+                            checked={seat?.selectable}
+                        >
+                            Có thể chọn
+                        </Checkbox>
                     </Col>
 
                     <Col xs={24} className={'mb-1'}>

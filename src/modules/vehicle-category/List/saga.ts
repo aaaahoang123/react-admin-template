@@ -8,11 +8,14 @@ import {VehicleCategory} from '../../../entities/api/vehicle-category';
 import {ActionPayload} from '../../../entities/common/action-payload';
 import {message} from 'antd';
 import {IndexState} from '../../../core/index.state';
+import isEqual from 'lodash/isEqual';
 
 function* refreshListVehicleCategories() {
-    const params = yield select((state: IndexState) => state.vehicleCategory.list.params);
-    const vehicleCategories: Rest<VehicleCategory> = yield call(vehicleCategoryService.list, params);
-    yield put(vehicleCategoriesListLoaded(vehicleCategories.datas));
+    const {params, oldParams} = yield select((state: IndexState) => state.vehicleCategory.list);
+    if (!isEqual(params, oldParams)) {
+        const vehicleCategories: Rest<VehicleCategory> = yield call(vehicleCategoryService.list, params);
+        yield put(vehicleCategoriesListLoaded(vehicleCategories.datas, params));
+    }
 }
 
 function* deleteVehicleCategory(action: ActionPayload<number>) {

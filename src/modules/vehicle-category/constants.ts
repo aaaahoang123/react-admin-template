@@ -13,3 +13,4 @@ export const VEHICLE_CATEGORY_DELETED_SUCCESS = 'deleted_success@vehicle_categor
 export const VEHICLE_CATEGORY_DELETED_FAILED = 'deleted_failed@vehicle_category';
 
 export const SINGLE_VEHICLE_CATEGORY_LOADED = 'single_loaded@vehicle_category';
+export const VEHICLE_CATEGORY_FORM_CHANGE_BY_REST_DATA = 'form_change_by_rest_data@vehicle_category';

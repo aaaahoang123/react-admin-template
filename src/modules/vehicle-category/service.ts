@@ -21,11 +21,11 @@ export class VehicleCategoryService {
     }
 
     single(id: number) {
-        return axios.get<Rest<VehicleCategory>>(`${BASE_URL}vehicles/single-category`, {params: {id}});
+        return axios.get<Rest<VehicleCategory>>(`${BASE_URL}/vehicles/single-category`, {params: {id}});
     }
 
     editCategory(formData: VehicleCategoryFormState) {
-        return axios.put<Rest<VehicleCategory>>(`${BASE_URL}vehicles/edit-category`, formData);
+        return axios.put<Rest<VehicleCategory>>(`${BASE_URL}/vehicles/edit-category`, formData);
     }
 }
 

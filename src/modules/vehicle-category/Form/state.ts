@@ -9,10 +9,10 @@ export class VehicleSeatFormData {
 }
 
 export class VehicleCategoryFormState {
-    id?: number;
-    name?: string;
-    seat_quantity?: number;
-    status?: CommonStatus;
+    id: number | null = null;
+    name: string | null = null;
+    seat_quantity: number | null = null;
+    status: CommonStatus = CommonStatus.ACTIVE;
     vehicle_seats: VehicleSeatFormData[] = [];
     cols = 4;
     rows = 5;

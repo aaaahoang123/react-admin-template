@@ -16,6 +16,12 @@ interface AppProps {
     isMobile?: boolean;
 }
 
+// const AffixSidebar = React.forwardRef((props, ref: any) => (
+//         <Affix offsetTop={0}>
+//             <Sidebar/>
+//         </Affix>
+// ));
+
 function App(props: AppProps) {
     return (
         <>
@@ -26,7 +32,7 @@ function App(props: AppProps) {
                     <Row style={{width: '100%'}}>
                         <Col xs={0} sm={0} md={6} lg={6} xl={5} xxl={4}>
                             <Affix offsetTop={0}>
-                                <Sidebar/>
+                                <Sidebar />
                             </Affix>
                         </Col>
                         <Col xs={24} sm={24} md={18} lg={18} xl={19} xxl={20}>

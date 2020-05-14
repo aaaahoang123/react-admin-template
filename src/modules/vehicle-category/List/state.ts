@@ -6,4 +6,5 @@ export class VehicleCategoriesListState {
     items: IdMapper<VehicleCategory> = {};
     ids: Set<number> = new Set();
     params = new VehicleCategoryParams();
+    oldParams?: VehicleCategoryParams;
 }

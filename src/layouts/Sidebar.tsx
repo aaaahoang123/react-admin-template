@@ -59,9 +59,9 @@ function Sidebar({sidebarCollapse, pathname, routes}: SidebarProps) {
 const mapStateToProps = ({app, router, routes}: IndexState): SidebarProps => ({
     sidebarCollapse: app.sidebarCollapse,
     pathname: router.location.pathname,
-    routes: routes
+    routes: routes.routes
 })
 
-const connected = connect(mapStateToProps)(Sidebar)
+const connected = connect(mapStateToProps)(Sidebar);
 
 export default connected;

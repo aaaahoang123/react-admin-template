@@ -6,6 +6,7 @@ import VehicleCategoryForm from '../modules/vehicle-category/Form';
 import {AuthScope} from '../entities/enum/auth-scope';
 import {DashboardOutlined, GroupOutlined} from '@ant-design/icons/';
 import VehicleCategoriesList from '../modules/vehicle-category/List';
+import VehicleCategoryEditForm from '../modules/vehicle-category/Form/edit';
 
 const IndexRouter: Routes = [
     {
@@ -44,6 +45,15 @@ const IndexRouter: Routes = [
                 data: {
                     title: 'Tạo nhóm xe',
                     display: true
+                }
+            },
+            {
+                path: RouteEnum.edit + '/:id',
+                component: VehicleCategoryEditForm,
+                protected: true,
+                data: {
+                    title: 'Sửa nhóm xe',
+                    display: false
                 }
             }
         ]

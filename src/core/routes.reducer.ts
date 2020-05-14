@@ -1,38 +1,50 @@
 import IndexRouter from './index.router';
 import {ActionPayload} from '../entities/common/action-payload';
 import {LOCATION_CHANGE} from 'connected-react-router';
-import {Route, Routes} from '../entities/common/route';
+import {Route} from '../entities/common/route';
+import {matchPath} from 'react-router';
 
+export class RouterState {
+    routes = IndexRouter;
+    activatedRoutes: Route[] = [];
+}
 
-function routesReducer(routes = IndexRouter, action: ActionPayload) {
+function routesReducer(state = new RouterState(), action: ActionPayload) {
     switch (action.type) {
         case LOCATION_CHANGE:
-            return reduceRoutesByPathname(routes, action.payload?.location?.pathname);
+            return reduceRoutesByPathname(state, action.payload.location.pathname);
         default:
-            return routes;
+            return state;
     }
 }
 
-function reduceRoutesByPathname(routes: Routes, pathname: string): Routes {
-    if (!pathname) {
-        return routes;
-    }
-    return routes.map(route => checkActiveOfRoute(route, pathname));
-}
-
-function checkActiveOfRoute(route: Route, pathname: string, prefix = ''): Route {
-    const pathToCheck = prefix + route.path;
-    route.isActive =  pathToCheck === pathname;
-    if (route.children) {
-        route.children = route.children.map(child => {
-            const newChild = checkActiveOfRoute(child, pathname, pathToCheck);
-            if (newChild.isActive) {
-                route.isActive = true;
+function reduceRoutesByPathname(state: RouterState, pathname: string): RouterState {
+    state.activatedRoutes.forEach(route => route.isActive = false);
+    state.activatedRoutes = [];
+    const checkActiveOfRoute = (route: Route, pathname: string, prefix = ''): Route => {
+        const pathToCheck = prefix + route.path;
+        const testPath = matchPath(pathname, pathToCheck);
+        if (testPath) {
+            route.isActive = !!testPath?.isExact
+            if (route.isActive) {
+                state.activatedRoutes.push(route);
             }
-            return newChild;
-        });
+            if (route.children) {
+                route.children = route.children.map(child => {
+                    const newChild = checkActiveOfRoute(child, pathname, pathToCheck);
+                    if (newChild.isActive) {
+                        route.isActive = true;
+                        state.activatedRoutes.push(route);
+                    }
+                    return newChild;
+                });
+            }
+        }
+        return route;
     }
-    return route;
+
+    state.routes = state.routes.map((route) => checkActiveOfRoute(route, pathname));
+    return state;
 }
 
 export default routesReducer;

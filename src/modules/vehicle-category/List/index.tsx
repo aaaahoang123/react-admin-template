@@ -17,7 +17,6 @@ interface VehicleCategoriesListProps {
 }
 
 const Component = ({categories, vehicleCategoriesListRefresh, deleteVehicleCategory}: VehicleCategoriesListProps) => {
-    console.log(categories);
     useEffect(() => {
         vehicleCategoriesListRefresh();
         // eslint-disable-next-line
@@ -62,7 +61,7 @@ const Component = ({categories, vehicleCategoriesListRefresh, deleteVehicleCateg
             key: 'status',
             render: (text: any, record: VehicleCategory) => record.isDeleting ? (<LoadingOutlined />) : (
                 <Space size="middle">
-                    <Link to={RouteEnum.vehicle_categories + RouteEnum.edit + '?id=' + record.id}>Sửa</Link>
+                    <Link to={RouteEnum.vehicle_categories + RouteEnum.edit + '/' + record.id}>Sửa</Link>
                     <Popconfirm placement="topRight"
                                 title={'Bạn chắc chắn muốn xóa nhóm xe: ' + record.name + ' chứ?'}
                                 onConfirm={() => deleteVehicleCategory(record.id)}
@@ -83,6 +82,7 @@ const Component = ({categories, vehicleCategoriesListRefresh, deleteVehicleCateg
                 pagination={false}
                 scroll={{x: 800}}
                 size={'small'}
+                rowKey={'id'}
             />
         </Card>
     )
