@@ -35,7 +35,11 @@ const IndexRouter: Routes = [
                 protected: true,
                 data: {
                     title: 'Nhóm xe',
-                    display: true
+                    display: true,
+                    headerLinks: {
+                        navigateTo: RouteEnum.vehicle_categories + RouteEnum.create,
+                        title: 'Tạo nhóm xe'
+                    }
                 }
             },
             {

@@ -1,12 +1,16 @@
 import React from 'react';
 import './App.module.less';
-import {Affix, Col, Layout, PageHeader, Row} from 'antd';
+import {Affix, Col, Layout, Row} from 'antd';
 import Sidebar from './layouts/Sidebar';
 import AppHeader from './layouts/AppHeader';
 import DrawerSidebar from './layouts/DrawerSidebar';
 import './index.less';
 import RouterOutlet from './layouts/RouterOutlet';
 import {triggerSidebar} from './App.actions';
+import AppPageHeader from './layouts/AppPageHeader';
+import {User} from './entities/api/user';
+import {IndexState} from './core/index.state';
+import {connect} from 'react-redux';
 
 const {Content, Footer} = Layout;
 
@@ -14,6 +18,7 @@ interface AppProps {
     sidebarCollapse?: boolean;
     triggerSidebar?: typeof triggerSidebar;
     isMobile?: boolean;
+    user?: User;
 }
 
 // const AffixSidebar = React.forwardRef((props, ref: any) => (
@@ -22,7 +27,7 @@ interface AppProps {
 //         </Affix>
 // ));
 
-function App(props: AppProps) {
+function App({user}: AppProps) {
     return (
         <>
             <DrawerSidebar/>
@@ -30,18 +35,24 @@ function App(props: AppProps) {
                 <AppHeader/>
                 <Layout className="site-layout">
                     <Row style={{width: '100%'}}>
-                        <Col xs={0} sm={0} md={6} lg={6} xl={5} xxl={4}>
+                        <Col xs={0}
+                             sm={0}
+                             md={user ? 6 : 0}
+                             lg={user ? 6 : 0}
+                             xl={user ? 5 : 0}
+                             xxl={user ? 4 : 0}>
                             <Affix offsetTop={0}>
                                 <Sidebar />
                             </Affix>
                         </Col>
-                        <Col xs={24} sm={24} md={18} lg={18} xl={19} xxl={20}>
+                        <Col xs={24}
+                             sm={24}
+                             md={user ? 18 : 24}
+                             lg={user ? 18 : 24}
+                             xl={user ? 19 : 24}
+                             xxl={user ? 20: 24}>
                             <Layout>
-                                <PageHeader
-                                    onBack={() => null}
-                                    title="Title"
-                                    subTitle="This is a subtitle"
-                                />
+                                <AppPageHeader />
                                 <Content style={{margin: '24px', overflow: 'initial'}}>
                                     <div className="site-layout-background">
                                         <RouterOutlet/>
@@ -57,11 +68,12 @@ function App(props: AppProps) {
     );
 }
 
-// const mapStateToProps = ({app}: IndexState) => ({
-//     sidebarCollapse: app.sidebarCollapse,
-//     isMobile: app.isMobile
-// });
-//
-// const connected = connect(mapStateToProps, {triggerSidebar})(App);
+const mapStateToProps = ({app}: IndexState) => ({
+    sidebarCollapse: app.sidebarCollapse,
+    isMobile: app.isMobile,
+    user: app.user
+});
 
-export default App;
+const connected = connect(mapStateToProps, {triggerSidebar})(App);
+
+export default connected;

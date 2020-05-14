@@ -1,3 +1,3 @@
 export default interface IdMapper<T> {
-    [key: number]: T;
+    [key: string]: T;
 }

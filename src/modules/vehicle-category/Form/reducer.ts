@@ -41,7 +41,7 @@ function reduceSeatMatrixAndVehicleSeat(state: VehicleCategoryFormState, reset?:
     if (vehicleSeats.length > newSeatsQty) {
         vehicleSeats.length = newSeatsQty;
     }
-    state.matrix = range(state.rows)
+    const matrix = range(state.rows)
         .map((num, rowIndex) =>
             range(state.cols).map((num1, colIndex) => {
                 const index = state.cols * rowIndex + colIndex;
@@ -54,7 +54,7 @@ function reduceSeatMatrixAndVehicleSeat(state: VehicleCategoryFormState, reset?:
             })
         );
 
-    return state;
+    return {...state, matrix};
 }
 
 function onFormDataChange(oldState: VehicleCategoryFormState, {payload}: ActionPayload<ChangeSeatGridPayload>): VehicleCategoryFormState {

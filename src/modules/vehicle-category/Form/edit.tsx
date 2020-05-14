@@ -7,7 +7,7 @@ import { useParams } from 'react-router-dom';
 interface VehicleCategoryFormEditProps {
 }
 
-const Component = ({}: VehicleCategoryFormEditProps) => {
+const Component = (props: VehicleCategoryFormEditProps) => {
     let {id} = useParams();
     return (
         <>

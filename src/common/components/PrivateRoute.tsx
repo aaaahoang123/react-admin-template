@@ -9,15 +9,13 @@ import {Route as RouteType} from '../../entities/common/route';
 
 interface PrivateRouteProps {
     user?: User;
-    authenticated: boolean;
-    fetchAuthData: typeof fetchAuthData;
-    pathname: string;
+    authenticated?: boolean;
+    fetchAuthData?: typeof fetchAuthData;
     path: string;
-    route: RouteType;
-    isActive: boolean;
+    route?: RouteType;
 }
 
-function PrivateRoute({ children, user, fetchAuthData, authenticated, path, route, isActive, ...rest }: PrivateRouteProps & any): any {
+function PrivateRoute({ children, user, fetchAuthData, authenticated, path, route, ...rest }: PrivateRouteProps & any): any {
     if (authenticated && !user) {
         window.location.href = DOMAIN + '/authentication';
         return;
@@ -25,7 +23,7 @@ function PrivateRoute({ children, user, fetchAuthData, authenticated, path, rout
     /**
      * Just dispatch the action to fetch authData when this route is activated.
      */
-    if (!authenticated && isActive) {
+    if (!authenticated && route.isActive) {
         fetchAuthData();
     }
     return (
@@ -48,10 +46,10 @@ function PrivateRoute({ children, user, fetchAuthData, authenticated, path, rout
     );
 }
 
-const mapStateToProps = ({app, router}: IndexState) => ({
+const mapStateToProps = ({app, router, routes}: IndexState, {path}: PrivateRouteProps) => ({
     user: app.user,
-    pathname: router.location.pathname,
-    authenticated: app.authenticated
+    authenticated: app.authenticated,
+    route: routes.routes[path]
 });
 
 const connected = connect(mapStateToProps, {fetchAuthData})(PrivateRoute);
