@@ -3,33 +3,47 @@ import React from 'react';
 import {PageHeader} from 'antd';
 import {IndexState} from '../core/index.state';
 import {Route} from '../entities/common/route';
-import { Link } from 'react-router-dom';
+import {Route as BreadCrumbRoute} from 'antd/lib/breadcrumb/Breadcrumb';
+import {Link} from 'react-router-dom';
 import {User} from '../entities/api/user';
+import { goBack } from 'connected-react-router';
 
 interface AppPageHeaderProps {
     activeRoute?: Route;
-    breadcrumb?: any[];
+    breadcrumb?: BreadCrumbRoute[];
     user?: User;
+    goBack?: typeof goBack;
 }
 
-function Component({activeRoute, breadcrumb, user}: AppPageHeaderProps) {
+const BreadCrumbRenderer = (route: BreadCrumbRoute) => (
+    <Link to={route.path}>
+        {route.breadcrumbName}
+    </Link>
+);
+
+function Component({activeRoute, breadcrumb, user, goBack}: AppPageHeaderProps) {
     let headerLinks: any[] = [];
     if (activeRoute?.data?.headerLinks) {
         const rawHeaderLinks = Array.isArray(activeRoute.data.headerLinks)
             ? activeRoute.data.headerLinks
             : [activeRoute.data.headerLinks];
 
-        headerLinks = rawHeaderLinks.map(headerLink => <Link to={headerLink.navigateTo}
-                                                             key={headerLink.navigateTo}
-                                                             className={'ant-btn ant-btn-' + (headerLink.type || 'primary')}
-        >{headerLink.title}</Link>)
+        headerLinks = rawHeaderLinks.map(headerLink => (
+            <Link to={headerLink.navigateTo}
+                  key={headerLink.navigateTo}
+                  className={'ant-btn ant-btn-' + (headerLink.type || 'primary')}
+            >{headerLink.title}</Link>
+        ));
     }
 
     return user ? (
         <PageHeader
-            onBack={() => null}
+            onBack={goBack}
             title={activeRoute?.data?.title}
-            breadcrumb={{routes: breadcrumb}}
+            breadcrumb={{
+                routes: breadcrumb,
+                itemRender: BreadCrumbRenderer
+            }}
             extra={headerLinks}
             // subTitle="This is a subtitle"
         />
@@ -38,15 +52,10 @@ function Component({activeRoute, breadcrumb, user}: AppPageHeaderProps) {
 
 const mapStateToProps = ({routes, app}: IndexState, ownProps: AppPageHeaderProps) => ({
     activeRoute: routes.routes[routes.activatedRoutes[0] || ''],
-    breadcrumb: routes.activatedRoutes.reverse().map(path => {
-        return {
-            path: path,
-            breadcrumbName: routes.routes[path]?.data?.title,
-        };
-    }),
+    breadcrumb: routes.breadcrumb,
     user: app.user
 })
 
-const AppPageHeader = connect(mapStateToProps)(Component);
+const AppPageHeader = connect(mapStateToProps, {goBack})(Component);
 
 export default AppPageHeader;

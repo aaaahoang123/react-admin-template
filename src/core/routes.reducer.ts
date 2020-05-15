@@ -2,6 +2,7 @@ import IndexRouter from './index.router';
 import {ActionPayload} from '../entities/common/action-payload';
 import {LOCATION_CHANGE} from 'connected-react-router';
 import {Route} from '../entities/common/route';
+import {Route as BreadCrumbRoute} from 'antd/lib/breadcrumb/Breadcrumb';
 import {matchPath} from 'react-router';
 import IdMapper from '../entities/common/id-mapper';
 
@@ -10,6 +11,7 @@ export class RouterState {
     activatedRoutes: string[] = [];
     rootRoutes: string[] = [];
     childrenMapper: IdMapper<string[]> = {};
+    breadcrumb: BreadCrumbRoute[] = [];
 
     constructor() {
         IndexRouter.forEach(route => {
@@ -56,7 +58,6 @@ function reduceRoutesByPathname(state: RouterState, pathname: string): RouterSta
         return false;
     };
     state.rootRoutes.forEach(route => checkActive(route) ? activatedRoutesSet.add(route) : null);
-
     const activatedRoutes = Array.from(activatedRoutesSet);
 
     [...state.activatedRoutes, ...activatedRoutes].forEach(route => {
@@ -66,9 +67,17 @@ function reduceRoutesByPathname(state: RouterState, pathname: string): RouterSta
         };
     });
 
+    const breadcrumb: BreadCrumbRoute[] = [...activatedRoutes].reverse().map(path => {
+        return {
+            path: path,
+            breadcrumbName: state.routes[path]?.data?.title || '',
+        };
+    })
+
     return {
         ...state,
-        activatedRoutes
+        activatedRoutes,
+        breadcrumb
     } as RouterState;
 }
 

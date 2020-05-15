@@ -30,7 +30,7 @@ const IndexRouter: Routes = [
         },
         children: [
             {
-                path: RouteEnum.list,
+                path: RouteEnum.self,
                 component: VehicleCategoriesList,
                 protected: true,
                 data: {

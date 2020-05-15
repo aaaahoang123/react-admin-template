@@ -48,5 +48,6 @@ export enum RouteEnum {
     change_schedule_all = '/change-schedule-all',
     list_last_log = '/list-last-log',
     export_xls = '/export-xls',
-    refunds = '/refunds'
+    refunds = '/refunds',
+    self = '/./',
 }
