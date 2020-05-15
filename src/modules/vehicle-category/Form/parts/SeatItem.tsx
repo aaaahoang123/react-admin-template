@@ -20,7 +20,7 @@ function seatItemComponent({seatIndex, seat, vehicleSeatFormDataChange}: SeatIte
         vehicleSeatFormDataChange?.({selectable: e.target.checked}, seatIndex);
     };
 
-    const onAdditionPriceChange = (e?: number) => {
+    const onAdditionPriceChange = (e?: any) => {
         vehicleSeatFormDataChange?.({addition_price: e}, seatIndex);
     };
 

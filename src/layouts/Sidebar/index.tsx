@@ -5,6 +5,7 @@ import {connect} from 'react-redux';
 import SidebarItem from './item';
 
 const {Sider} = Layout;
+
 export interface SidebarProps {
     sidebarCollapse: boolean;
     pathname: string;

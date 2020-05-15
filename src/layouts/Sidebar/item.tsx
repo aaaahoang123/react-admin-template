@@ -7,6 +7,12 @@ import {Menu} from 'antd';
 
 const {SubMenu, Item} = Menu;
 
+// const RefLink = React.forwardRef((props: any, ref: any) => (
+//     <Link ref={ref} to={props.path}>
+//         {props.children}
+//     </Link>
+// ));
+
 interface SidebarItemProps {
     path: string;
     route?: Route;
@@ -18,7 +24,6 @@ const mapStateToProps = ({routes}: IndexState, {path}: SidebarItemProps) => ({
     route: routes.routes[path],
     children: routes.childrenMapper[path]
 });
-
 
 function item({path, route, displayIcon, ...rest}: SidebarItemProps) {
     return route?.data?.display
