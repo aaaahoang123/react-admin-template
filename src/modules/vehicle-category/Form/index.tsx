@@ -1,7 +1,49 @@
-import React from 'react';
-import {Button, Card, Col, Form, Input, Row} from 'antd';
+import React, {useEffect} from 'react';
+import {Button, Card, Col, Form, Input, InputNumber, Row} from 'antd';
+import {IndexState} from '../../../core/index.state';
+import {connect} from 'react-redux';
+import {vehicleCategoryFormChange, vehicleCategoryFormIdChange, vehicleCategoryFormSubmit} from '../actions';
+import {VehicleCategoryFormState} from './state';
+import SeatGrid from './parts/SeatGrid';
+import {
+    SaveOutlined
+} from '@ant-design/icons';
+import StatusSelector from '../../../common/components/StatusSelector';
+import {CommonStatus} from '../../../common/enums/common-status.enum';
 
-const VehicleCategoryForm = (props: any) => {
+interface VehicleCategoryFormProps {
+    formData: VehicleCategoryFormState;
+    vehicleCategoryFormChange: typeof vehicleCategoryFormChange;
+    vehicleCategoryFormIdChange: typeof vehicleCategoryFormIdChange;
+    vehicleCategoryFormSubmit: typeof vehicleCategoryFormSubmit;
+    categoryId?: number;
+}
+
+const VehicleCategoryForm = (
+    {
+        formData,
+        vehicleCategoryFormChange,
+        categoryId,
+        vehicleCategoryFormIdChange,
+        vehicleCategoryFormSubmit
+    }: VehicleCategoryFormProps) => {
+    const [form] = Form.useForm();
+    useEffect(() => {
+        form.setFieldsValue(formData);
+        // eslint-disable-next-line
+    }, [formData]);
+
+    useEffect(() => {
+        vehicleCategoryFormIdChange(categoryId);
+        // eslint-disable-next-line
+    }, []);
+
+    const onFinish = (values: any) => {
+        vehicleCategoryFormSubmit(formData);
+    };
+
+    const onValueChange = (value: Partial<VehicleCategoryFormState>) => vehicleCategoryFormChange(value);
+
     return (
         <Card bordered={false}>
             <Row justify="center">
@@ -9,8 +51,10 @@ const VehicleCategoryForm = (props: any) => {
                     <Form
                         layout="vertical"
                         name="basic"
-                        initialValues={{ remember: true }}
-                        // onFinish={onFinish}
+                        initialValues={formData}
+                        onFinish={onFinish}
+                        onValuesChange={onValueChange}
+                        form={form}
                         // onFinishFailed={onFinishFailed}
                     >
                         <Row gutter={10}>
@@ -18,21 +62,65 @@ const VehicleCategoryForm = (props: any) => {
                                 <Form.Item
                                     label="Tên nhóm xe"
                                     name="name"
-                                    rules={[{ required: true, message: 'Mã bảo mật không được để trống' }]}
+                                    rules={[{required: true, message: 'Tên nhóm xe'}]}
                                 >
-                                    <Input />
+                                    <Input placeholder={'Nhập tên nhóm xe'}/>
                                 </Form.Item>
                             </Col>
                             <Col xs={24} md={12}>
                                 <Form.Item
                                     label="Số chỗ ngồi"
                                     name="seat_quantity"
-                                    rules={[{ required: true, message: 'Mã bảo mật không được để trống' }]}
+                                    rules={[
+                                        {required: true, message: 'Hãy nhập số chỗ ngồi'},
+                                        {type: 'number', message: 'Số chỗ ngồi phải là số'}
+                                    ]}
                                 >
-                                    <Input />
+                                    <InputNumber min={1} className={'w-100'} placeholder={'Nhập số chỗ ngồi'}/>
+                                </Form.Item>
+                            </Col>
+
+                            {
+                                categoryId
+                                    ? <Col xs={24} md={12}>
+                                        <Form.Item
+                                            label="Trạng thái"
+                                            name="status"
+                                            rules={[
+                                                {required: true, message: 'Hãy chọn trạng thái'},
+                                            ]}
+                                        >
+                                            <StatusSelector status={CommonStatus} />
+                                        </Form.Item>
+                                    </Col>
+                                    : null
+                            }
+                        </Row>
+
+                        <Row gutter={10}>
+                            <Col xs={24} md={12}>
+                                <Form.Item
+                                    label="Số dãy"
+                                    name="cols"
+                                >
+                                    <InputNumber min={1}
+                                                 max={8}
+                                                 placeholder="Nhập số dãy ghế"
+                                                 className="w-100"/>
+                                </Form.Item>
+                            </Col>
+                            <Col xs={24} md={12}>
+                                <Form.Item
+                                    label="Số hàng"
+                                    name="rows"
+                                >
+                                    <InputNumber min={1}
+                                                 placeholder="Nhập số hàng ghế"
+                                                 className="w-100"/>
                                 </Form.Item>
                             </Col>
                         </Row>
+                        <SeatGrid/>
 
                         {/*<Form.Item*/}
                         {/*    label="Password"*/}
@@ -47,10 +135,12 @@ const VehicleCategoryForm = (props: any) => {
                         {/*</Form.Item>*/}
 
                         <Form.Item>
-                            <Button type="primary" htmlType="submit"
-                                    // loading={requesting}
+                            <Button type="primary"
+                                    htmlType="submit"
+                                    loading={formData.formSubmitting}
+                                    icon={<SaveOutlined />}
                             >
-                                Đăng nhập
+                                Lưu
                             </Button>
                         </Form.Item>
                     </Form>
@@ -60,4 +150,16 @@ const VehicleCategoryForm = (props: any) => {
     )
 };
 
-export default VehicleCategoryForm;
+const mapStateToProps = ({vehicleCategory}: IndexState) => {
+    return {
+        formData: vehicleCategory.form
+    };
+};
+
+const connected = connect(mapStateToProps, {
+    vehicleCategoryFormChange,
+    vehicleCategoryFormIdChange,
+    vehicleCategoryFormSubmit
+})(VehicleCategoryForm);
+
+export default connected;

@@ -1,6 +1,7 @@
 import axios from 'axios';
 import {notification} from 'antd';
 import {APP_DEBUG, AUTH_STORAGE_KEY} from './properties';
+import {logout} from '../utils/logout';
 
 const {loadProgressBar} = require('axios-progress-bar');
 
@@ -11,7 +12,6 @@ axios.interceptors.request.use((config) => {
     config.headers['Content-Type'] = 'application/json';
     config.headers['Accept'] = 'application/json';
     config.headers['Authorization'] = localStorage.getItem(AUTH_STORAGE_KEY || '') || '';
-    // Do something before request is sent
     return config;
 }, (error) => {
     if (APP_DEBUG) {
@@ -29,8 +29,7 @@ axios.interceptors.response.use((response) => {
     const error = e.response;
     if (error.status === 401) {
         notification.error({message: 'Thất bại', description: 'Lỗi xác thực hoặc phiên làm việc đã hết hạn.'});
-        // this.router.navigate(['/' + ERouters.login]);
-        // logout();
+        logout();
     } else if (error.status === 403) {
         notification
             .warning({
@@ -43,5 +42,5 @@ axios.interceptors.response.use((response) => {
         notification.error({message: 'Thất bại', description: 'Vui lòng thử lại sau'});
     }
     // message.success('This is a prompt message for success, and it will disappear in 10 seconds', 10)
-    // return Promise.reject(e);
+    return Promise.reject(e);
 });
