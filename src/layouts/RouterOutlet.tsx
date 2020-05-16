@@ -1,4 +1,4 @@
-import {Route} from 'react-router';
+import {Route, Redirect} from 'react-router';
 import React from "react";
 import {Route as RouteType} from '../entities/common/route';
 import PrivateRoute from '../common/components/PrivateRoute';
@@ -13,6 +13,12 @@ const mapRoute = ({routes}: IndexState, {path}: { path: string }) => {
 };
 
 const Render = ({path, route, childrenPath}: { path: string, route?: RouteType, childrenPath?: string[] }) => {
+    if(route?.redirectTo) {
+        return (
+            <Redirect from={path} to={route.redirectTo} exact={true} />
+        );
+    }
+
     const R = route?.protected
         ? PrivateRoute
         : Route;
