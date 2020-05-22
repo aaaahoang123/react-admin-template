@@ -1,10 +1,10 @@
 import {Store} from 'redux';
-import {onResizeWindow} from '../App.actions';
+import {changeWindowSize} from '../App.actions';
 
 function listenViewResize(store: Store<any, any>) {
     const listenResizeChange = () => {
         const { innerWidth: width, innerHeight: height } = window;
-        store.dispatch(onResizeWindow(width, height));
+        store.dispatch(changeWindowSize({width, height}));
     }
     listenResizeChange();
     window.addEventListener('resize', listenResizeChange);

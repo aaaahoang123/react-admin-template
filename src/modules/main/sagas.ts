@@ -1,5 +1,4 @@
-import { takeLatest, call, put, all } from 'redux-saga/effects';
-import {APP_LOGIN} from './constants';
+import { call, put, all, takeLeading, select } from 'redux-saga/effects';
 import {ActionPayload} from '../../entities/common/action-payload';
 import AuthService from './auth-service';
 import {appUserChange} from '../../App.actions';
@@ -7,11 +6,13 @@ import {Rest} from '../../entities/common/rest';
 import {User} from '../../entities/api/user';
 import {AUTH_STORAGE_KEY} from '../../core/properties';
 import {RouteEnum} from '../../common/enums/route.enum';
-import { push } from 'connected-react-router';
-import {FETCH_AUTH_DATA} from '../../App.constants';
+import {LOCATION_CHANGE, push} from 'connected-react-router';
 import {safeCall} from '../../utils/safe-call';
-import {loginComplete} from './actions';
+import {loginComplete, mainLogin} from './actions';
 import {message} from 'antd';
+import {takeLeadingAction} from "../../utils/redux/saga-effects";
+import {IndexState} from "../../core/index.state";
+import {Route} from "../../entities/common/route";
 
 function* login(action: ActionPayload) {
     try {
@@ -27,15 +28,19 @@ function* login(action: ActionPayload) {
     }
 }
 
-function* fetchUserData() {
-    const response: Rest<User> = yield call(AuthService.userData);
-    yield put(appUserChange(response.data));
+function* doFetchUserData() {
+    const isAuthenticated = yield select((state: IndexState) => state.app.authenticated);
+    const route: Route = yield select((state: IndexState) => state.routes.routes[state.router.location.pathname]);
+    if (!isAuthenticated && route.protected) {
+        const response: Rest<User> = yield call(AuthService.userData);
+        yield put(appUserChange(response.data));
+    }
 }
 
 function* MainSaga() {
     yield all([
-        takeLatest(APP_LOGIN, login),
-        takeLatest(FETCH_AUTH_DATA, safeCall(fetchUserData))
+        takeLeadingAction(mainLogin, login),
+        takeLeading(LOCATION_CHANGE, safeCall(doFetchUserData))
     ])
 }
 

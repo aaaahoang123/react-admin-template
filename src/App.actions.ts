@@ -1,32 +1,6 @@
-import {APP_USER_CHANGED, COLLAPSE_SIDEBAR, FETCH_AUTH_DATA, WINDOW_SIZE_CHANGE} from './App.constants';
 import {User} from './entities/api/user';
-import {ActionPayload} from './entities/common/action-payload';
+import {createAction} from "./utils/redux/create-action";
 
-export function triggerSidebar() {
-    return {
-        type: COLLAPSE_SIDEBAR
-    }
-}
-
-export function onResizeWindow(width: number, height: number) {
-    return {
-        type: WINDOW_SIZE_CHANGE,
-        payload: {
-            width,
-            height
-        }
-    }
-}
-
-export function appUserChange(user?: User): ActionPayload<User | undefined> {
-    return {
-        type: APP_USER_CHANGED,
-        payload: user
-    }
-}
-
-export function fetchAuthData() {
-    return {
-        type: FETCH_AUTH_DATA
-    }
-}
+export const triggerSidebar = createAction('sidebar_collapse@app');
+export const changeWindowSize = createAction<{width: number, height: number}>('change_window_size@app');
+export const appUserChange = createAction<User>('user_changed@app');

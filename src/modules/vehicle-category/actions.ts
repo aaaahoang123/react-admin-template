@@ -15,7 +15,7 @@ import {
 import {ActionPayload} from '../../entities/common/action-payload';
 import {VehicleCategoryFormState, VehicleSeatFormData} from './Form/state';
 import {VehicleCategory} from '../../entities/api/vehicle-category';
-import {createAction} from '../../utils/create-action';
+import {createAction} from '../../utils/redux/create-action';
 import {VehicleCategoryParams} from './params';
 
 export type ChangeSeatGridPayload = Partial<VehicleCategoryFormState> & { reset?: boolean };

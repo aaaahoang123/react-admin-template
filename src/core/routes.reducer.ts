@@ -60,13 +60,6 @@ function reduceRoutesByPathname(state: RouterState, pathname: string): RouterSta
     state.rootRoutes.forEach(route => checkActive(route) ? activatedRoutesSet.add(route) : null);
     const activatedRoutes = Array.from(activatedRoutesSet);
 
-    [...state.activatedRoutes, ...activatedRoutes].forEach(route => {
-        state.routes[route] = {
-            ...state.routes[route],
-            isActive: activatedRoutes.includes(route)
-        };
-    });
-
     const breadcrumb: BreadCrumbRoute[] = [...activatedRoutes].reverse().map(path => {
         return {
             path: path,
