@@ -1,16 +1,10 @@
 import {MainState} from './state';
-import {ActionPayload} from '../../entities/common/action-payload';
-import {APP_LOGIN, APP_LOGIN_COMPLETE} from './constants';
+import {createReducer, on} from "../../utils/redux/create-reducer";
+import {loginComplete, mainLogin} from "./actions";
 
-function mainReducer(state = new MainState(), action: ActionPayload): MainState {
-    switch (action.type) {
-        case APP_LOGIN:
-            return {...state, requesting: true};
-        case APP_LOGIN_COMPLETE:
-            return {...state, requesting: false};
-        default:
-            return state;
-    }
-}
+const mainReducer = createReducer(new MainState(), [
+    on(mainLogin, state => ({...state, requesting: true})),
+    on(loginComplete, state => ({...state, requesting: false}))
+]);
 
 export default mainReducer;
