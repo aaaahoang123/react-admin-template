@@ -3,26 +3,22 @@ import {Drawer} from 'antd';
 import React from 'react';
 import { triggerSidebar } from '../App.reducer';
 import {IndexState} from '../core/index.state';
-import {connect} from 'react-redux';
-import {User} from '../entities/api/user';
+import {useDispatch, useSelector} from 'react-redux';
 
 const styles = require('./DrawerSidebar.module.less');
 
-interface DrawerSidebarProps {
-    sidebarCollapse?: boolean;
-    triggerSidebar?: typeof triggerSidebar;
-    isMobile?: boolean;
-    user?: User;
-}
+function DrawerSidebar() {
+    const {sidebarCollapse, isMobile, authenticated: isAuthenticated} = useSelector(({app}: IndexState) => ({...app}));
+    const dispatch = useDispatch();
 
-function DrawerSidebar({sidebarCollapse, triggerSidebar, isMobile, user}: DrawerSidebarProps) {
+    const trigger = () => dispatch(triggerSidebar())
     return (
         <Drawer
             title="Basic Drawer"
             placement="left"
             closable={false}
-            onClose={triggerSidebar}
-            visible={sidebarCollapse && isMobile && !!user}
+            onClose={trigger}
+            visible={sidebarCollapse && isMobile && isAuthenticated}
             className={styles.drawer}
         >
             <Sidebar />
@@ -30,12 +26,4 @@ function DrawerSidebar({sidebarCollapse, triggerSidebar, isMobile, user}: Drawer
     );
 }
 
-const mapStateToProps = ({app}: IndexState) => ({
-    sidebarCollapse: app.sidebarCollapse,
-    isMobile: app.isMobile,
-    user: app.user
-});
-
-const connected = connect(mapStateToProps, {triggerSidebar})(DrawerSidebar);
-
-export default connected;
+export default DrawerSidebar;

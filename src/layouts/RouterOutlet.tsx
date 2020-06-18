@@ -1,20 +1,18 @@
-import {Route, Redirect, Switch} from 'react-router';
+import {Redirect, Route, Switch} from 'react-router';
 import React from "react";
 import {Route as RouteType} from '../entities/common/route';
 import PrivateRoute from '../common/components/PrivateRoute';
 import {IndexState} from '../core/index.state';
-import {connect} from 'react-redux';
-// import {Switch} from 'antd';
+import {useSelector} from 'react-redux';
 
-const mapRoute = ({routes}: IndexState, {path}: { path: string }) => {
-    return {
-        route: routes.routes[path],
-        childrenPath: routes.childrenMapper[path]
-    };
-};
+const Render = ({ path }: { path: string, route?: RouteType, childrenPath?: string[] }) => {
+    const {route, childrenPath} = useSelector(({routes}: IndexState) => {
+        return {
+            route: routes.routes[path],
+            childrenPath: routes.childrenMapper[path]
+        };
+    });
 
-const Render = ({path, route, childrenPath}: { path: string, route?: RouteType, childrenPath?: string[] }) => {
-    console.log(route);
     if(route?.redirectTo) {
         return (
             <Redirect from={path} to={route.redirectTo} exact={true} />
@@ -25,40 +23,34 @@ const Render = ({path, route, childrenPath}: { path: string, route?: RouteType, 
         ? PrivateRoute
         : Route;
 
-    const children =  childrenPath?.map(child => <ConnectedRender key={child} path={child} />);
+    const children =  childrenPath?.map(child => <Render key={child} path={child} />);
 
     const content = route?.component
         ? <route.component/>
         : null;
 
-    const result = (
+    return (
         <R path={path}>
-            { content }
-            { children }
+            {content}
+            {children}
         </R>
     );
-    console.log(result);
-    return result;
 }
 
-const ConnectedRender = connect(mapRoute)(Render);
+function RouterOutlet() {
+    const {routes} = useSelector(({routes}: IndexState) => ({
+        routes: routes.rootRoutes
+    }));
 
-function RouterOutlet({routes}: {routes?: string[]}) {
     return (
         <Switch>
             {
                 routes?.map(route => (
-                    <ConnectedRender path={route} key={route} />
+                    <Render path={route} key={route} />
                 ))
             }
         </Switch>
     );
 }
 
-const mapStateToProps = ({routes}: IndexState) => ({
-    routes: routes.rootRoutes
-});
-
-const connected = connect(mapStateToProps, null)(RouterOutlet);
-
-export default connected;
+export default RouterOutlet;

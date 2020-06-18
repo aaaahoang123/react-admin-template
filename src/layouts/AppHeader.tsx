@@ -6,18 +6,16 @@ import {
     MenuFoldOutlined
 } from '@ant-design/icons';
 import {IndexState} from '../core/index.state';
-import {connect} from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import {triggerSidebar} from '../App.reducer';
 
 const styles = require('./AppHeader.module.less');
 
-interface AppHeaderProps {
-    sidebarCollapse: boolean;
-    triggerSidebar: typeof triggerSidebar;
-    isMobile?: boolean;
-}
+function AppHeader() {
+    const {sidebarCollapse, isMobile} = useSelector(({app}: IndexState) => ({...app}));
 
-function AppHeader({sidebarCollapse, triggerSidebar, isMobile}: AppHeaderProps) {
+    const dispatch = useDispatch();
+
     return (
         <>
             <Layout.Header className={styles.header}>
@@ -27,7 +25,7 @@ function AppHeader({sidebarCollapse, triggerSidebar, isMobile}: AppHeaderProps) 
                             isMobile ?
                                 React.createElement(sidebarCollapse ? MenuUnfoldOutlined : MenuFoldOutlined, {
                                     className: styles.trigger,
-                                    onClick: triggerSidebar,
+                                    onClick: () => dispatch(triggerSidebar()),
                                 }) : null
                         }
                         <div className={styles.logo}>
@@ -42,11 +40,4 @@ function AppHeader({sidebarCollapse, triggerSidebar, isMobile}: AppHeaderProps) 
     );
 }
 
-const mapStateToProps = ({app}: IndexState) => ({
-    sidebarCollapse: app.sidebarCollapse,
-    isMobile: app.isMobile
-});
-
-const connected = connect(mapStateToProps, {triggerSidebar})(AppHeader)
-
-export default connected;
+export default AppHeader;

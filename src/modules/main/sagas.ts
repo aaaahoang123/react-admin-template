@@ -1,6 +1,5 @@
 import { call, put, all, takeLeading, select } from 'redux-saga/effects';
-import {ActionPayload} from '../../entities/common/action-payload';
-import AuthService from './auth-service';
+import authService from './auth-service';
 import {appUserChange} from '../../App.reducer';
 import {Rest} from '../../entities/common/rest';
 import {User} from '../../entities/api/user';
@@ -13,10 +12,12 @@ import {message} from 'antd';
 import {takeLeadingAction} from "../../utils/redux/saga-effects";
 import {IndexState} from "../../core/index.state";
 import {Route} from "../../entities/common/route";
+import {PayloadAction} from '@reduxjs/toolkit';
+import {LoginFormData} from './Login/form-data';
 
-function* login(action: ActionPayload) {
+function* login(action: PayloadAction<LoginFormData>) {
     try {
-        const response: Rest<User> = yield call(AuthService.login, action.payload);
+        const response: Rest<User> = yield call(authService.login, action.payload);
         localStorage.setItem(AUTH_STORAGE_KEY, response.data.access_token || '');
         yield put(appUserChange(response.data));
         yield put(push(RouteEnum.dashboard));
@@ -32,7 +33,7 @@ function* doFetchUserData() {
     const isAuthenticated = yield select((state: IndexState) => state.app.authenticated);
     const route: Route = yield select((state: IndexState) => state.routes.routes[state.router.location.pathname]);
     if (!isAuthenticated && route.protected) {
-        const response: Rest<User> = yield call(AuthService.userData);
+        const response: Rest<User> = yield call(authService.userData);
         yield put(appUserChange(response.data));
     }
 }

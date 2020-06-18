@@ -4,39 +4,34 @@ import AppPageHeader from './AppPageHeader';
 import RouterOutlet from './RouterOutlet';
 import React from 'react';
 import {IndexState} from '../core/index.state';
-import {connect} from 'react-redux';
-import {triggerSidebar} from '../App.reducer';
-import {User} from '../entities/api/user';
+import {useSelector} from 'react-redux';
 
 const {Content, Footer} = Layout;
 
-interface MainContentProps {
-    // sidebarCollapse?: boolean;
-    // triggerSidebar?: typeof triggerSidebar;
-    // isMobile?: boolean;
-    user?: User;
-}
+function MainContent() {
+    const {authenticated} = useSelector(({app}: IndexState) => ({
+        authenticated: app.authenticated
+    }));
 
-function Component({user}: MainContentProps) {
     return (
         <Layout className="site-layout">
             <Row style={{width: '100%'}}>
                 <Col xs={0}
                      sm={0}
-                     md={user ? 6 : 0}
-                     lg={user ? 6 : 0}
-                     xl={user ? 5 : 0}
-                     xxl={user ? 4 : 0}>
+                     md={authenticated ? 6 : 0}
+                     lg={authenticated ? 6 : 0}
+                     xl={authenticated ? 5 : 0}
+                     xxl={authenticated ? 4 : 0}>
                     <Affix offsetTop={0}>
                         <Sidebar />
                     </Affix>
                 </Col>
                 <Col xs={24}
                      sm={24}
-                     md={user ? 18 : 24}
-                     lg={user ? 18 : 24}
-                     xl={user ? 19 : 24}
-                     xxl={user ? 20: 24}>
+                     md={authenticated ? 18 : 24}
+                     lg={authenticated ? 18 : 24}
+                     xl={authenticated ? 19 : 24}
+                     xxl={authenticated ? 20: 24}>
                     <Layout>
                         <AppPageHeader />
                         <Content style={{margin: '24px', overflow: 'initial'}}>
@@ -51,11 +46,5 @@ function Component({user}: MainContentProps) {
         </Layout>
     );
 }
-
-const mapStateToProps = ({app}: IndexState) => ({
-    user: app.user
-});
-
-const MainContent = connect(mapStateToProps, {triggerSidebar})(Component);
 
 export default MainContent;

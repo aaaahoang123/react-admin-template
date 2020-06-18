@@ -1,19 +1,10 @@
-import {connect} from 'react-redux';
+import { useDispatch, useSelector} from 'react-redux';
 import React from 'react';
 import {PageHeader} from 'antd';
 import {IndexState} from '../core/index.state';
-import {Route} from '../entities/common/route';
 import {Route as BreadCrumbRoute} from 'antd/lib/breadcrumb/Breadcrumb';
 import {Link} from 'react-router-dom';
-import {User} from '../entities/api/user';
 import { goBack } from 'connected-react-router';
-
-interface AppPageHeaderProps {
-    activeRoute?: Route;
-    breadcrumb?: BreadCrumbRoute[];
-    user?: User;
-    goBack?: typeof goBack;
-}
 
 const BreadCrumbRenderer = (route: BreadCrumbRoute) => (
     <Link to={route.path}>
@@ -21,7 +12,17 @@ const BreadCrumbRenderer = (route: BreadCrumbRoute) => (
     </Link>
 );
 
-function Component({activeRoute, breadcrumb, user, goBack}: AppPageHeaderProps) {
+function AppPageHeader() {
+    const {activeRoute, breadcrumb, authenticated} = useSelector(({routes, app}: IndexState) => ({
+        activeRoute: routes.routes[routes.activatedRoutes[0] || ''],
+        breadcrumb: routes.breadcrumb,
+        authenticated: app.authenticated
+    }));
+
+    const dispatch = useDispatch();
+
+    const back = () => dispatch(goBack());
+
     let headerLinks: any[] = [];
     if (activeRoute?.data?.headerLinks) {
         const rawHeaderLinks = Array.isArray(activeRoute.data.headerLinks)
@@ -36,9 +37,9 @@ function Component({activeRoute, breadcrumb, user, goBack}: AppPageHeaderProps) 
         ));
     }
 
-    return user ? (
+    return authenticated ? (
         <PageHeader
-            onBack={goBack}
+            onBack={back}
             title={activeRoute?.data?.title}
             breadcrumb={{
                 routes: breadcrumb,
@@ -49,13 +50,5 @@ function Component({activeRoute, breadcrumb, user, goBack}: AppPageHeaderProps) 
         />
     ) : null;
 }
-
-const mapStateToProps = ({routes, app}: IndexState, ownProps: AppPageHeaderProps) => ({
-    activeRoute: routes.routes[routes.activatedRoutes[0] || ''],
-    breadcrumb: routes.breadcrumb,
-    user: app.user
-})
-
-const AppPageHeader = connect(mapStateToProps, {goBack})(Component);
 
 export default AppPageHeader;

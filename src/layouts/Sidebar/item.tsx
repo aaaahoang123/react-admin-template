@@ -1,31 +1,21 @@
 import React from 'react';
-import {connect} from 'react-redux';
+import {useSelector} from 'react-redux';
 import {IndexState} from '../../core/index.state';
-import {Route} from '../../entities/common/route';
 import {Link} from 'react-router-dom';
 import {Menu} from 'antd';
 
 const {SubMenu, Item} = Menu;
 
-// const RefLink = React.forwardRef((props: any, ref: any) => (
-//     <Link ref={ref} to={props.path}>
-//         {props.children}
-//     </Link>
-// ));
-
 interface SidebarItemProps {
     path: string;
-    route?: Route;
     displayIcon?: boolean;
-    children?: string[]
 }
 
-const mapStateToProps = ({routes}: IndexState, {path}: SidebarItemProps) => ({
-    route: routes.routes[path],
-    children: routes.childrenMapper[path]
-});
+function SubMenuItem({path, displayIcon, ...rest}: SidebarItemProps) {
+    const {route} = useSelector(({routes}: IndexState) => ({
+        route: routes.routes[path]
+    }));
 
-function item({path, route, displayIcon, ...rest}: SidebarItemProps) {
     return route?.data?.display
         ? (
             <Item title={route?.data?.title} {...rest}>
@@ -36,9 +26,12 @@ function item({path, route, displayIcon, ...rest}: SidebarItemProps) {
         : null;
 }
 
-const SubMenuItem = connect(mapStateToProps, {})(item);
 
-function Component({path, route, children, ...rest}: SidebarItemProps) {
+function SidebarItem({path, ...rest}: SidebarItemProps) {
+    const {route, children} = useSelector(({routes}: IndexState) => ({
+        route: routes.routes[path],
+        children: routes.childrenMapper[path]
+    }));
     return route?.data?.display
         ? (
             children?.length
@@ -56,7 +49,5 @@ function Component({path, route, children, ...rest}: SidebarItemProps) {
         : null;
 
 }
-
-const SidebarItem = connect(mapStateToProps, {})(Component);
 
 export default SidebarItem;

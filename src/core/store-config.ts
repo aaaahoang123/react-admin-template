@@ -5,7 +5,7 @@ import IndexReducer from './index.reducer';
 import listenViewResize from '../common/listen-view-resize';
 import IndexSagas from './index.sagas';
 import {APP_DEBUG} from './properties';
-import {configureStore} from '@reduxjs/toolkit';
+import { configureStore } from '@reduxjs/toolkit';
 
 const sagaMiddleware = createSagaMiddleware({
     onError(e) {
