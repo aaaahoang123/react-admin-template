@@ -1,10 +1,11 @@
 import createSagaMiddleware from 'redux-saga';
 import {routerMiddleware} from "connected-react-router";
 import {history} from './history';
-import {applyMiddleware, compose, createStore} from 'redux';
 import IndexReducer from './index.reducer';
 import listenViewResize from '../common/listen-view-resize';
 import IndexSagas from './index.sagas';
+import {APP_DEBUG} from './properties';
+import {configureStore} from '@reduxjs/toolkit';
 
 const sagaMiddleware = createSagaMiddleware({
     onError(e) {
@@ -13,15 +14,14 @@ const sagaMiddleware = createSagaMiddleware({
 });
 const routeMiddleware = routerMiddleware(history);
 
-const store = createStore(
-    IndexReducer,
-    compose(
-        applyMiddleware(
-            routeMiddleware,
-            sagaMiddleware
-        )
-    )
-);
+const store = configureStore({
+    reducer: IndexReducer,
+    devTools: APP_DEBUG,
+    middleware: [
+        routeMiddleware,
+        sagaMiddleware,
+    ]
+});
 
 listenViewResize(store);
 

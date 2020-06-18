@@ -1,7 +1,7 @@
 import Sidebar from './Sidebar';
 import {Drawer} from 'antd';
 import React from 'react';
-import { triggerSidebar } from '../App.actions';
+import { triggerSidebar } from '../App.reducer';
 import {IndexState} from '../core/index.state';
 import {connect} from 'react-redux';
 import {User} from '../entities/api/user';

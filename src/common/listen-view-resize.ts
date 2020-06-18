@@ -1,5 +1,5 @@
 import {Store} from 'redux';
-import {changeWindowSize} from '../App.actions';
+import {changeWindowSize} from '../App.reducer';
 
 function listenViewResize(store: Store<any, any>) {
     const listenResizeChange = () => {

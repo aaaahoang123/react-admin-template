@@ -1,7 +1,7 @@
 import React from 'react';
 import {Form, Input, Button, Card, Row, Col} from 'antd';
 import {connect} from 'react-redux';
-import {mainLogin} from '../actions';
+import {mainLogin} from '../reducer';
 import {IndexState} from '../../../core/index.state';
 import {LoginFormData} from './form-data';
 import {UserOutlined, LockOutlined, SendOutlined} from '@ant-design/icons';

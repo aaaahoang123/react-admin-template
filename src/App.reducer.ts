@@ -1,21 +1,30 @@
 import {AppState} from './App.state';
 import {ActionPayload} from './entities/common/action-payload';
-import {createReducer, on} from "./utils/redux/create-reducer";
-import {appUserChange, changeWindowSize, triggerSidebar} from "./App.actions";
+import {createSlice} from '@reduxjs/toolkit';
+import {User} from './entities/api/user';
 
-const appReducer = createReducer(new AppState(), [
-    on(triggerSidebar, state => ({...state, sidebarCollapse: !state.sidebarCollapse})),
-    on(changeWindowSize, reduceWindowSize),
-    on(appUserChange, (state, {payload}) => ({...state, user: payload, authenticated: !!payload}))
-]);
-
-function reduceWindowSize(state: AppState, action: ActionPayload<{width: number, height: number}>): AppState {
-    return {
-        ...state,
-        windowWidth: action.payload.width,
-        windowHeight: action.payload.height,
-        isMobile: action.payload.width < 768,
+const slice = createSlice({
+    initialState: new AppState(),
+    name: 'app',
+    reducers: {
+        triggerSidebar(state) {
+            state.sidebarCollapse = !state.sidebarCollapse;
+        },
+        changeWindowSize(state, action: ActionPayload<{width: number, height: number}>) {
+            Object.assign(state, {
+                windowWidth: action.payload.width,
+                windowHeight: action.payload.height,
+                isMobile: action.payload.width < 768,
+            });
+        },
+        appUserChange(state, {payload}: ActionPayload<User | undefined>) {
+            state.user = payload as any;
+            state.authenticated = !!payload;
+        }
     }
-}
+});
+
+export const { appUserChange, triggerSidebar, changeWindowSize } = slice.actions;
+const appReducer = slice.reducer;
 
 export default appReducer;

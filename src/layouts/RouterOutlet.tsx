@@ -1,9 +1,10 @@
-import {Route, Redirect} from 'react-router';
+import {Route, Redirect, Switch} from 'react-router';
 import React from "react";
 import {Route as RouteType} from '../entities/common/route';
 import PrivateRoute from '../common/components/PrivateRoute';
 import {IndexState} from '../core/index.state';
 import {connect} from 'react-redux';
+// import {Switch} from 'antd';
 
 const mapRoute = ({routes}: IndexState, {path}: { path: string }) => {
     return {
@@ -13,6 +14,7 @@ const mapRoute = ({routes}: IndexState, {path}: { path: string }) => {
 };
 
 const Render = ({path, route, childrenPath}: { path: string, route?: RouteType, childrenPath?: string[] }) => {
+    console.log(route);
     if(route?.redirectTo) {
         return (
             <Redirect from={path} to={route.redirectTo} exact={true} />
@@ -29,25 +31,27 @@ const Render = ({path, route, childrenPath}: { path: string, route?: RouteType, 
         ? <route.component/>
         : null;
 
-    return (
+    const result = (
         <R path={path}>
             { content }
             { children }
         </R>
     );
+    console.log(result);
+    return result;
 }
 
 const ConnectedRender = connect(mapRoute)(Render);
 
 function RouterOutlet({routes}: {routes?: string[]}) {
     return (
-        <>
+        <Switch>
             {
                 routes?.map(route => (
                     <ConnectedRender path={route} key={route} />
                 ))
             }
-        </>
+        </Switch>
     );
 }
 
