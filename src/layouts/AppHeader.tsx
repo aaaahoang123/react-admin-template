@@ -7,7 +7,7 @@ import {
 } from '@ant-design/icons';
 import {IndexState} from '../core/index.state';
 import {connect} from 'react-redux';
-import {triggerSidebar} from '../App.actions';
+import {triggerSidebar} from '../App.reducer';
 
 const styles = require('./AppHeader.module.less');
 

@@ -1,14 +1,14 @@
 import { call, put, all, takeLeading, select } from 'redux-saga/effects';
 import {ActionPayload} from '../../entities/common/action-payload';
 import AuthService from './auth-service';
-import {appUserChange} from '../../App.actions';
+import {appUserChange} from '../../App.reducer';
 import {Rest} from '../../entities/common/rest';
 import {User} from '../../entities/api/user';
 import {AUTH_STORAGE_KEY} from '../../core/properties';
 import {RouteEnum} from '../../common/enums/route.enum';
 import {LOCATION_CHANGE, push} from 'connected-react-router';
 import {safeCall} from '../../utils/safe-call';
-import {loginComplete, mainLogin} from './actions';
+import {loginComplete, mainLogin} from './reducer';
 import {message} from 'antd';
 import {takeLeadingAction} from "../../utils/redux/saga-effects";
 import {IndexState} from "../../core/index.state";

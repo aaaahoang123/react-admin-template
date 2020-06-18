@@ -5,7 +5,7 @@ import RouterOutlet from './RouterOutlet';
 import React from 'react';
 import {IndexState} from '../core/index.state';
 import {connect} from 'react-redux';
-import {triggerSidebar} from '../App.actions';
+import {triggerSidebar} from '../App.reducer';
 import {User} from '../entities/api/user';
 
 const {Content, Footer} = Layout;
