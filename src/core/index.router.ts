@@ -3,6 +3,7 @@ import {RouteEnum} from '../common/enums/route.enum';
 import Login from '../modules/main/Login';
 import Dashboard from '../modules/main/Dashboard';
 import {DashboardOutlined} from '@ant-design/icons/';
+import productRoutes from '../modules/product/routes';
 
 const IndexRouter: Routes = [
     {
@@ -58,6 +59,7 @@ const IndexRouter: Routes = [
     //         }
     //     ]
     // },
+    productRoutes,
     {
         path: RouteEnum.root,
         data: {
@@ -72,6 +74,10 @@ const IndexRouter: Routes = [
                     title: 'Đăng nhập',
                     display: false
                 }
+            },
+            {
+                path: '*',
+                redirectTo: RouteEnum.dashboard
             }
         ]
     },

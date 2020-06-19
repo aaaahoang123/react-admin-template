@@ -11,25 +11,31 @@ const slice = createSlice({
         triggerSidebar(state) {
             state.sidebarCollapse = !state.sidebarCollapse;
         },
-        changeWindowSize: (state, {payload}: PayloadAction<{width: number, height: number}>) => {
-            state.windowWidth = payload.width;
-            state.windowHeight = payload.height;
-            state.isMobile = payload.width < 768;
+        changeWindowSize(state, {payload}: PayloadAction<{width: number, height: number}>) {
+            Object.assign(state, {
+                windowWidth: payload.width,
+                windowHeight: payload.height,
+                isMobile: payload.width < 768
+            });
         },
         appUserChange(state, {payload}: PayloadAction<User | undefined>) {
             state.user = payload as any;
         },
         appTokenChange(state, {payload}: PayloadAction<string>) {
             state.token = payload;
-            const info = decode(payload) as JwtPayload;
+            const info = decode(payload || '') as JwtPayload;
             state.tokenInfo = info;
             state.authenticated = info?.exp > new Date().valueOf() / 1000;
         }
     }
 });
 
-export const { appUserChange, triggerSidebar, changeWindowSize, appTokenChange } = slice.actions;
-export const appInitialize = createAction('app/initialize')
+const actions = slice.actions;
+export const appUserChange = actions.appUserChange;
+export const appTokenChange = actions.appTokenChange;
+export const triggerSidebar = actions.triggerSidebar;
+export const changeWindowSize = actions.changeWindowSize;
+export const appInitialize = createAction('app/initialize');
 
 const appReducer = slice.reducer;
 

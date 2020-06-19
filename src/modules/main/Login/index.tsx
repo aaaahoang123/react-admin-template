@@ -1,17 +1,26 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {Form, Input, Button, Card, Row, Col} from 'antd';
 import {useDispatch, useSelector} from 'react-redux';
 import {mainLogin} from '../reducer';
 import {IndexState} from '../../../core/index.state';
 import {LoginFormData} from './form-data';
-import {UserOutlined, LockOutlined, SendOutlined} from '@ant-design/icons';
+import { LockOutlined, SendOutlined, PhoneOutlined } from '@ant-design/icons';
+import {useHistory} from 'react-router';
 
 function Login() {
-    const {requesting} = useSelector(({main}: IndexState) => ({
-        requesting: main.requesting
+    const {requesting, authenticated} = useSelector(({main, app}: IndexState) => ({
+        requesting: main.requesting,
+        authenticated: app.authenticated
     }));
 
     const dispatch = useDispatch();
+    const history = useHistory();
+
+    useEffect(() => {
+        if (authenticated) {
+            history.push('/dashboard');
+        }
+    }, [history, authenticated])
 
     const onFinish = (values: any) => {
         dispatch(mainLogin(values));
@@ -34,10 +43,12 @@ function Login() {
                         onFinishFailed={onFinishFailed}
                     >
                         <Form.Item
-                            name="email"
+                            name="phone_number"
                             rules={[{ required: true, message: 'Email không được để trống' }]}
                         >
-                            <Input  prefix={<UserOutlined className="site-form-item-icon" />}  />
+                            <Input  prefix={<PhoneOutlined className="site-form-item-icon" />}
+                                    placeholder="Số điện thoại"
+                            />
                         </Form.Item>
 
                         <Form.Item
@@ -47,7 +58,9 @@ function Login() {
                                 {min: 6, max: 50, message: 'Mật khẩu phải có từ 6 - 50 ký tự'}
                             ]}
                         >
-                            <Input.Password prefix={<LockOutlined className="site-form-item-icon" />} />
+                            <Input.Password prefix={<LockOutlined className="site-form-item-icon" />}
+                                            placeholder="Mật khẩu"
+                            />
                         </Form.Item>
 
                         <Form.Item>
