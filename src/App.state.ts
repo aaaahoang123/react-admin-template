@@ -1,4 +1,5 @@
 import {User} from './entities/api/user';
+import {JwtPayload} from './entities/common/jwt-payload';
 
 export class AppState {
     sidebarCollapse = false;
@@ -7,4 +8,7 @@ export class AppState {
     isMobile: boolean = false;
     user?: User;
     authenticated = false;
+
+    token?: string;
+    tokenInfo?: JwtPayload;
 }

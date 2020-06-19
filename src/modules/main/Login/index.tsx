@@ -1,19 +1,20 @@
 import React from 'react';
 import {Form, Input, Button, Card, Row, Col} from 'antd';
-import {connect} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {mainLogin} from '../reducer';
 import {IndexState} from '../../../core/index.state';
 import {LoginFormData} from './form-data';
 import {UserOutlined, LockOutlined, SendOutlined} from '@ant-design/icons';
 
-interface LoginProps {
-    appLogin: typeof mainLogin;
-    requesting: boolean;
-}
+function Login() {
+    const {requesting} = useSelector(({main}: IndexState) => ({
+        requesting: main.requesting
+    }));
 
-function Login({appLogin, requesting}: LoginProps) {
+    const dispatch = useDispatch();
+
     const onFinish = (values: any) => {
-        appLogin(values)
+        dispatch(mainLogin(values));
     };
 
     const onFinishFailed = (errorInfo: any) => {
@@ -62,10 +63,4 @@ function Login({appLogin, requesting}: LoginProps) {
     );
 }
 
-const mapStateToProps = ({main}: IndexState) => ({
-    requesting: main.requesting
-});
-
-const connected = connect(mapStateToProps, {appLogin: mainLogin})(Login)
-
-export default connected;
+export default Login;

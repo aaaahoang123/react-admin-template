@@ -1,18 +1,17 @@
 import {Layout, Menu} from 'antd';
 import React from 'react';
 import {IndexState} from '../../core/index.state';
-import {connect} from 'react-redux';
+import {useSelector} from 'react-redux';
 import SidebarItem from './item';
 
 const {Sider} = Layout;
 
-export interface SidebarProps {
-    sidebarCollapse: boolean;
-    pathname: string;
-    routes: string[];
-}
+function Sidebar() {
+    const {pathname, routes} = useSelector(({app, router, routes}: IndexState) => ({
+        pathname: router.location.pathname,
+        routes: routes.rootRoutes
+    }));
 
-function Sidebar({sidebarCollapse, pathname, routes}: SidebarProps) {
     return (
         <Sider
             style={{
@@ -35,12 +34,4 @@ function Sidebar({sidebarCollapse, pathname, routes}: SidebarProps) {
     );
 }
 
-const mapStateToProps = ({app, router, routes}: IndexState): SidebarProps => ({
-    sidebarCollapse: app.sidebarCollapse,
-    pathname: router.location.pathname,
-    routes: routes.rootRoutes
-})
-
-const connected = connect(mapStateToProps)(Sidebar);
-
-export default connected;
+export default Sidebar;
