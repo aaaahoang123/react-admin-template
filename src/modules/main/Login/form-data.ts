@@ -1,4 +1,4 @@
 export class LoginFormData {
-    email?: string;
-    password?: string;
+    phone_number?: string = undefined;
+    password?: string = undefined;
 }

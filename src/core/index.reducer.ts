@@ -4,6 +4,7 @@ import main from '../modules/main/reducer';
 import {history} from './history';
 import { connectRouter } from 'connected-react-router';
 import routes from './routes.reducer';
+import products from '../modules/product/reducer';
 
 const IndexReducer = combineReducers({
     app,
@@ -11,6 +12,8 @@ const IndexReducer = combineReducers({
     routes,
     // vehicleCategory,
     router: connectRouter(history),
+
+    products
 })
 
 export default IndexReducer

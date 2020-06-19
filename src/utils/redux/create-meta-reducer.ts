@@ -1,4 +1,4 @@
-import {CaseReducer, CaseReducerWithPrepare, PayloadAction, PrepareAction} from '@reduxjs/toolkit';
+import {CaseReducer, CaseReducerWithPrepare, PayloadAction} from '@reduxjs/toolkit';
 // import {Action} from '?redux';
 
 

@@ -3,9 +3,9 @@ import { all, takeLatest, select, put } from 'redux-saga/effects';
 import {LOCATION_CHANGE} from 'connected-react-router';
 import {IndexState} from './index.state';
 import {RouterState} from './routes.reducer';
-import {takeLatestAction} from '../utils/redux/saga-effects';
 import {appInitialize, appTokenChange} from '../App.reducer';
 import {AUTH_STORAGE_KEY} from './properties';
+import ProductSagas from '../modules/product/sagas';
 
 function* listenRouteChangeAndChangeTitle() {
     const {routes, activatedRoutes}: RouterState = yield select((state: IndexState) => state.routes);
@@ -23,8 +23,10 @@ function* onAppInitialize() {
 export default function* IndexSaga() {
     yield all([
         MainSaga(),
+        ProductSagas(),
+
         // VehicleCategorySagas(),
         takeLatest(LOCATION_CHANGE, listenRouteChangeAndChangeTitle),
-        takeLatestAction(appInitialize, onAppInitialize)
+        takeLatest(appInitialize, onAppInitialize)
     ])
 }

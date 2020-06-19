@@ -1,18 +1,78 @@
-import React from 'react';
-import {Col, Layout, Row} from 'antd';
+import React, {useEffect} from 'react';
+import {Avatar, Button, Col, Dropdown, Layout, Menu, Row} from 'antd';
 
 import {
     MenuUnfoldOutlined,
-    MenuFoldOutlined
+    MenuFoldOutlined,
+    UserOutlined
 } from '@ant-design/icons';
 import {IndexState} from '../core/index.state';
 import { useDispatch, useSelector } from 'react-redux';
 import {triggerSidebar} from '../App.reducer';
+import {loadUserData, mainLogout} from '../modules/main/reducer';
+import {ClickParam} from 'antd/lib/menu';
 
 const styles = require('./AppHeader.module.less');
 
+const RightMenu = () => {
+
+    const {user} = useSelector(({app}: IndexState) => ({
+        user: app.user
+    }));
+
+    const dispatch = useDispatch();
+
+    const handleMenuClick = (e: ClickParam) => {
+        if (e.key === 'logout') {
+            dispatch(mainLogout());
+        }
+    }
+
+    return (
+        <Menu onClick={handleMenuClick}>
+            <Menu.Item key="info">
+                {user?.name}
+            </Menu.Item>
+            <Menu.Item key="logout">
+                Đăng xuất
+            </Menu.Item>
+        </Menu>
+    );
+};
+
+const AuthDropDown = () => {
+    const {user} = useSelector(({app}: IndexState) => ({
+        user: app.user
+    }));
+
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        dispatch(loadUserData())
+    }, [dispatch]);
+
+    return (
+        <div className={styles.headerRight}>
+            <Dropdown overlay={<RightMenu />}>
+                <Button>
+                    <Avatar shape="square"
+                            icon={<UserOutlined />}
+                            src={user?.avatar_url}
+                            size={'small'}
+                            className={'mr-2'}
+                    /> {user?.name}
+                </Button>
+            </Dropdown>
+        </div>
+    );
+};
+
 function AppHeader() {
-    const {sidebarCollapse, isMobile} = useSelector(({app}: IndexState) => ({...app}));
+    const {sidebarCollapse, isMobile, authenticated} = useSelector(({app}: IndexState) => ({
+        sidebarCollapse: app.sidebarCollapse,
+        isMobile: app.isMobile,
+        authenticated: app.authenticated
+    }));
 
     const dispatch = useDispatch();
 
@@ -33,6 +93,11 @@ function AppHeader() {
                         </div>
                     </Col>
                     <Col xs={0} sm={0} md={18} lg={18} xl={19} xxl={20}>
+                        {
+                            authenticated
+                                ? <AuthDropDown />
+                                : null
+                        }
                     </Col>
                 </Row>
             </Layout.Header>

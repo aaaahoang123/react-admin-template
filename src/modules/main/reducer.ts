@@ -1,17 +1,12 @@
 import {MainState} from './state';
-import {createSlice, PayloadAction} from '@reduxjs/toolkit';
+import {createAction, createSlice, PayloadAction} from '@reduxjs/toolkit';
 import {LoginFormData} from './Login/form-data';
-
-// const mainReducer = createReducer(new MainState(), [
-//     on(mainLogin, state => ({...state, requesting: true})),
-//     on(loginComplete, state => ({...state, requesting: false}))
-// ]);
 
 const slice = createSlice({
     initialState: new MainState(),
     name: 'main',
     reducers: {
-        mainLogin:(state, action: PayloadAction<LoginFormData>) => {
+        mainLogin(state, action: PayloadAction<LoginFormData>) {
             return {
                 ...state,
                 requesting: true
@@ -26,7 +21,13 @@ const slice = createSlice({
     }
 });
 
-export const {mainLogin, loginComplete} = slice.actions;
+const actions = slice.actions;
+
+export const mainLogin = actions.mainLogin;
+export const loginComplete = actions.loginComplete;
+export const mainLogout = createAction('main/logout');
+export const loadUserData = createAction('main/loadUserData');
+
 const mainReducer = slice.reducer;
 
 export default mainReducer;

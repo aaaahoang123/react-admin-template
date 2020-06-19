@@ -1,7 +1,9 @@
 import axios from 'axios';
 import {notification} from 'antd';
-import {APP_DEBUG, AUTH_STORAGE_KEY} from './properties';
-import {logout} from '../utils/logout';
+import {APP_DEBUG} from './properties';
+import {mainLogout} from '../modules/main/reducer';
+import store from './store-config';
+import {getAuthHeader} from '../utils/auth';
 
 const {loadProgressBar} = require('axios-progress-bar');
 
@@ -9,9 +11,10 @@ loadProgressBar();
 
 // Add a request interceptor
 axios.interceptors.request.use((config) => {
-    config.headers['Content-Type'] = 'application/json';
-    config.headers['Accept'] = 'application/json';
-    config.headers['Authorization'] = localStorage.getItem(AUTH_STORAGE_KEY || '') || '';
+    config.headers = {
+        ...config.headers,
+        ...getAuthHeader()
+    };
     return config;
 }, (error) => {
     if (APP_DEBUG) {
@@ -29,7 +32,7 @@ axios.interceptors.response.use((response) => {
     const error = e.response;
     if (error.status === 401) {
         notification.error({message: 'Thất bại', description: 'Lỗi xác thực hoặc phiên làm việc đã hết hạn.'});
-        logout();
+        store.dispatch(mainLogout())
     } else if (error.status === 403) {
         notification
             .warning({

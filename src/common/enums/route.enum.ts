@@ -50,4 +50,5 @@ export enum RouteEnum {
     export_xls = '/export-xls',
     refunds = '/refunds',
     self = '/./',
+    products = '/products',
 }
