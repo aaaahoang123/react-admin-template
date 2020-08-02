@@ -1,16 +1,16 @@
 import {Layout, Menu} from 'antd';
 import React from 'react';
-import {IndexState} from '../../core/index.state';
-import {useSelector} from 'react-redux';
+import {RootState} from '../../core/state';
+import {shallowEqual, useSelector} from 'react-redux';
 import SidebarItem from './item';
 
 const {Sider} = Layout;
 
 function Sidebar() {
-    const {pathname, routes} = useSelector(({app, router, routes}: IndexState) => ({
+    const {pathname, routes} = useSelector(({app, router, routes}: RootState) => ({
         pathname: router.location.pathname,
         routes: routes.rootRoutes
-    }));
+    }), shallowEqual);
 
     return (
         <Sider

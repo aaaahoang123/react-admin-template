@@ -4,7 +4,7 @@ import React, {useEffect, useState} from 'react';
 import {UploadProps} from 'antd/lib/upload';
 import {UploadChangeParam, UploadFile} from 'antd/lib/upload/interface';
 import {BASE_URL} from '../../../core/properties';
-import {getAuthHeader} from '../../../utils/auth';
+import {getAuthHeader} from '../../utils/auth';
 
 function getBase64(file: File): Promise<string> {
     return new Promise((resolve, reject) => {

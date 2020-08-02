@@ -3,7 +3,7 @@ import {createAction, createSlice, PayloadAction} from '@reduxjs/toolkit';
 import {LoginFormData} from './Login/form-data';
 
 const slice = createSlice({
-    initialState: new MainState(),
+    initialState: {...new MainState()},
     name: 'main',
     reducers: {
         mainLogin(state, action: PayloadAction<LoginFormData>) {

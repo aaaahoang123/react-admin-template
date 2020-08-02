@@ -1,7 +1,7 @@
-import { useDispatch, useSelector} from 'react-redux';
+import {shallowEqual, useDispatch, useSelector} from 'react-redux';
 import React from 'react';
 import {PageHeader} from 'antd';
-import {IndexState} from '../core/index.state';
+import {RootState} from '../core/state';
 import {Route as BreadCrumbRoute} from 'antd/lib/breadcrumb/Breadcrumb';
 import {Link} from 'react-router-dom';
 import { goBack } from 'connected-react-router';
@@ -13,11 +13,11 @@ const BreadCrumbRenderer = (route: BreadCrumbRoute) => (
 );
 
 function AppPageHeader() {
-    const {activeRoute, breadcrumb, authenticated} = useSelector(({routes, app}: IndexState) => ({
+    const {activeRoute, breadcrumb, authenticated} = useSelector(({routes, app}: RootState) => ({
         activeRoute: routes.routes[routes.activatedRoutes[0] || ''],
         breadcrumb: routes.breadcrumb,
         authenticated: app.authenticated
-    }));
+    }), shallowEqual);
 
     const dispatch = useDispatch();
 

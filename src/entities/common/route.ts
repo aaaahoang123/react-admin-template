@@ -9,6 +9,7 @@ export interface Route {
     protected?: boolean;
     children?: Route[];
     isActive?: boolean;
+    accessible?: boolean;
 }
 
 export declare type Routes = Route[];

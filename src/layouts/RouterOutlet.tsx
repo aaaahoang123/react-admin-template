@@ -2,16 +2,16 @@ import {Redirect, Route, Switch} from 'react-router';
 import React from "react";
 import {Route as RouteType} from '../entities/common/route';
 import PrivateRoute from '../common/components/PrivateRoute';
-import {IndexState} from '../core/index.state';
-import {useSelector} from 'react-redux';
+import {RootState} from '../core/state';
+import {shallowEqual, useSelector} from 'react-redux';
 
 const Render = ({ path }: { path: string, route?: RouteType, childrenPath?: string[] }) => {
-    const {route, childrenPath} = useSelector(({routes}: IndexState) => {
+    const {route, childrenPath} = useSelector(({routes}: RootState) => {
         return {
             route: routes.routes[path],
             childrenPath: routes.childrenMapper[path]
         };
-    });
+    }, shallowEqual);
 
     if(route?.redirectTo) {
         return (
@@ -38,7 +38,7 @@ const Render = ({ path }: { path: string, route?: RouteType, childrenPath?: stri
 }
 
 function RouterOutlet() {
-    const {routes} = useSelector(({routes}: IndexState) => ({
+    const {routes} = useSelector(({routes}: RootState) => ({
         routes: routes.rootRoutes
     }));
 

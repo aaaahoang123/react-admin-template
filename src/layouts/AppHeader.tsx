@@ -6,23 +6,23 @@ import {
     MenuFoldOutlined,
     UserOutlined
 } from '@ant-design/icons';
-import {IndexState} from '../core/index.state';
-import { useDispatch, useSelector } from 'react-redux';
+import {RootState} from '../core/state';
+import {shallowEqual, useDispatch, useSelector} from 'react-redux';
 import {triggerSidebar} from '../App.reducer';
 import {loadUserData, mainLogout} from '../modules/main/reducer';
-import {ClickParam} from 'antd/lib/menu';
+import {MenuInfo} from 'rc-menu/es/interface';
 
 const styles = require('./AppHeader.module.less');
 
 const RightMenu = () => {
 
-    const {user} = useSelector(({app}: IndexState) => ({
+    const {user} = useSelector(({app}: RootState) => ({
         user: app.user
-    }));
+    }), shallowEqual);
 
     const dispatch = useDispatch();
 
-    const handleMenuClick = (e: ClickParam) => {
+    const handleMenuClick = (e: MenuInfo) => {
         if (e.key === 'logout') {
             dispatch(mainLogout());
         }
@@ -41,7 +41,7 @@ const RightMenu = () => {
 };
 
 const AuthDropDown = () => {
-    const {user} = useSelector(({app}: IndexState) => ({
+    const {user} = useSelector(({app}: RootState) => ({
         user: app.user
     }));
 
@@ -68,7 +68,7 @@ const AuthDropDown = () => {
 };
 
 function AppHeader() {
-    const {sidebarCollapse, isMobile, authenticated} = useSelector(({app}: IndexState) => ({
+    const {sidebarCollapse, isMobile, authenticated} = useSelector(({app}: RootState) => ({
         sidebarCollapse: app.sidebarCollapse,
         isMobile: app.isMobile,
         authenticated: app.authenticated

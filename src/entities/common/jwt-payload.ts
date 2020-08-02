@@ -6,4 +6,8 @@ export interface JwtPayload {
     nbf: number;
     prv: string;
     sub: string; // user_id
+
+    is_admin: boolean;
+    roles: any[];
+
 }

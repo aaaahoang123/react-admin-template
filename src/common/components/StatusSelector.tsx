@@ -1,5 +1,5 @@
 import React from 'react';
-import enumToRecords from '../../utils/enum-to-records';
+import enumToRecords from '../utils/enum-to-records';
 import {Select} from 'antd';
 
 const {Option} = Select;

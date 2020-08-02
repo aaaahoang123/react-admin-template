@@ -3,15 +3,15 @@ import Sidebar from './Sidebar';
 import AppPageHeader from './AppPageHeader';
 import RouterOutlet from './RouterOutlet';
 import React from 'react';
-import {IndexState} from '../core/index.state';
-import {useSelector} from 'react-redux';
+import {RootState} from '../core/state';
+import {shallowEqual, useSelector} from 'react-redux';
 
 const {Content, Footer} = Layout;
 
 function MainContent() {
-    const {authenticated} = useSelector(({app}: IndexState) => ({
+    const {authenticated} = useSelector(({app}: RootState) => ({
         authenticated: app.authenticated
-    }));
+    }), shallowEqual);
 
     return (
         <Layout className="site-layout">

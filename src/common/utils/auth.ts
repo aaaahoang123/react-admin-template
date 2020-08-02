@@ -1,4 +1,4 @@
-import {AUTH_STORAGE_KEY} from '../core/properties';
+import {AUTH_STORAGE_KEY} from '../../core/properties';
 
 export function authToken(): string {
     return localStorage.getItem(AUTH_STORAGE_KEY) || '';

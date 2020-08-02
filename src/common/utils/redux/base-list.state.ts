@@ -1,5 +1,5 @@
-import IdMapper from '../../entities/common/id-mapper';
-import {PaginationMeta} from '../../entities/common/pagination-meta';
+import IdMapper from '../../../entities/common/id-mapper';
+import {PaginationMeta} from '../../../entities/common/pagination-meta';
 
 abstract class BaseListState<InstanceType = any, ParamsType = any, IdType = number> {
     ids: IdType[] = [];

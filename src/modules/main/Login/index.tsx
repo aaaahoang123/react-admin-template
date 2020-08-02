@@ -1,17 +1,17 @@
 import React, {useEffect} from 'react';
 import {Form, Input, Button, Card, Row, Col} from 'antd';
-import {useDispatch, useSelector} from 'react-redux';
+import {shallowEqual, useDispatch, useSelector} from 'react-redux';
 import {mainLogin} from '../reducer';
-import {IndexState} from '../../../core/index.state';
+import {RootState} from '../../../core/state';
 import {LoginFormData} from './form-data';
 import { LockOutlined, SendOutlined, PhoneOutlined } from '@ant-design/icons';
 import {useHistory} from 'react-router';
 
 function Login() {
-    const {requesting, authenticated} = useSelector(({main, app}: IndexState) => ({
+    const {requesting, authenticated} = useSelector(({main, app}: RootState) => ({
         requesting: main.requesting,
         authenticated: app.authenticated
-    }));
+    }), shallowEqual);
 
     const dispatch = useDispatch();
     const history = useHistory();

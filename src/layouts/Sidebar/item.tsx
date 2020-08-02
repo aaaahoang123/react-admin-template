@@ -1,6 +1,6 @@
 import React from 'react';
-import {useSelector} from 'react-redux';
-import {IndexState} from '../../core/index.state';
+import {shallowEqual, useSelector} from 'react-redux';
+import {RootState} from '../../core/state';
 import {Link} from 'react-router-dom';
 import {Menu} from 'antd';
 
@@ -12,9 +12,9 @@ interface SidebarItemProps {
 }
 
 function SubMenuItem({path, displayIcon, ...rest}: SidebarItemProps) {
-    const {route} = useSelector(({routes}: IndexState) => ({
+    const {route} = useSelector(({routes}: RootState) => ({
         route: routes.routes[path]
-    }));
+    }), shallowEqual);
 
     return route?.data?.display
         ? (
@@ -28,7 +28,7 @@ function SubMenuItem({path, displayIcon, ...rest}: SidebarItemProps) {
 
 
 function SidebarItem({path, ...rest}: SidebarItemProps) {
-    const {route, children} = useSelector(({routes}: IndexState) => ({
+    const {route, children} = useSelector(({routes}: RootState) => ({
         route: routes.routes[path],
         children: routes.childrenMapper[path]
     }));

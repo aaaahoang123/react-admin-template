@@ -1,13 +1,17 @@
-import axios from 'axios';
+import Axios from 'axios';
 import {notification} from 'antd';
-import {APP_DEBUG} from './properties';
-import {mainLogout} from '../modules/main/reducer';
-import store from './store-config';
 import {getAuthHeader} from '../utils/auth';
+import store from '../../core/store';
+import {mainLogout} from '../../modules/main/reducer';
+import {APP_DEBUG, DOMAIN} from '../../core/properties';
 
 const {loadProgressBar} = require('axios-progress-bar');
 
 loadProgressBar();
+
+const axios = Axios.create({
+    baseURL: DOMAIN
+});
 
 // Add a request interceptor
 axios.interceptors.request.use((config) => {
@@ -47,3 +51,5 @@ axios.interceptors.response.use((response) => {
     // message.success('This is a prompt message for success, and it will disappear in 10 seconds', 10)
     return Promise.reject(e);
 });
+
+export default axios;

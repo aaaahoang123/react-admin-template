@@ -5,7 +5,7 @@ import {History} from 'history';
 import {RouterState as AppRouterState} from './routes.reducer';
 import {ProductState} from '../modules/product/state';
 
-export interface IndexState {
+export interface RootState {
     app: AppState;
     main: MainState;
     // vehicleCategory: VehicleCategoryState;

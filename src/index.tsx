@@ -4,10 +4,9 @@ import './index.less';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 import { Provider } from 'react-redux';
-import './core/axios-config';
 import { ConnectedRouter } from 'connected-react-router';
-import {history} from './core/history';
-import store from './core/store-config';
+import history from './core/history';
+import store from './core/store';
 
 ReactDOM.render(
     <Provider store={ store }>

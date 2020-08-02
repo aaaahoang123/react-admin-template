@@ -1,16 +1,16 @@
 import React from "react";
 import { Route, Redirect } from "react-router-dom";
-import {IndexState} from '../../core/index.state';
-import {useSelector} from 'react-redux';
+import {RootState} from '../../core/state';
+import {shallowEqual, useSelector} from 'react-redux';
 
 interface PrivateRouteProps {
     path: string;
 }
 
 function PrivateRoute({ children, path, ...rest }: PrivateRouteProps & any): any {
-    const {authenticated} = useSelector(({app}: IndexState) => ({
+    const {authenticated} = useSelector(({app}: RootState) => ({
         authenticated: app.authenticated,
-    }));
+    }), shallowEqual);
     return (
         <Route {...rest} path={path}
                render={({ location }) =>

@@ -2,10 +2,10 @@ import {Routes} from '../entities/common/route';
 import {RouteEnum} from '../common/enums/route.enum';
 import Login from '../modules/main/Login';
 import Dashboard from '../modules/main/Dashboard';
-import {DashboardOutlined} from '@ant-design/icons/';
+import {DashboardOutlined} from '@ant-design/icons';
 import productRoutes from '../modules/product/routes';
 
-const IndexRouter: Routes = [
+const rootRoutes: Routes = [
     {
         path: RouteEnum.dashboard,
         component: Dashboard,
@@ -61,26 +61,17 @@ const IndexRouter: Routes = [
     // },
     productRoutes,
     {
-        path: RouteEnum.root,
+        path: RouteEnum.login,
+        component: Login,
         data: {
             title: 'Đăng nhập',
             display: false
-        },
-        children: [
-            {
-                path: RouteEnum.login,
-                component: Login,
-                data: {
-                    title: 'Đăng nhập',
-                    display: false
-                }
-            },
-            {
-                path: '*',
-                redirectTo: RouteEnum.dashboard
-            }
-        ]
+        }
     },
+    {
+        path: '*',
+        redirectTo: RouteEnum.dashboard
+    }
 ];
 
-export default IndexRouter;
+export default rootRoutes;
