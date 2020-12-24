@@ -1,0 +1,72 @@
+@import '../../variables';
+
+//:host {
+//  text-rendering: optimizeLegibility;
+//  -webkit-font-smoothing: antialiased;
+//  -moz-osx-font-smoothing: grayscale;
+//}
+
+.appLayout {
+  height: 100vh;
+}
+
+.headerTrigger {
+  height: 64px;
+  padding: 20px 24px;
+  font-size: 20px;
+  cursor: pointer;
+  transition: all .3s, padding 0s;
+}
+
+.trigger:hover {
+  color: @primary-color;
+}
+
+.header {
+  padding: 0;
+  width: 100%;
+  z-index: 2;
+}
+
+.appHeader {
+  position: relative;
+  height: @layout-header-height;
+  padding: 0;
+  background: @white;
+  box-shadow: 0 1px 4px rgba(0, 21, 41, .08);
+}
+
+.content {
+  display: block;
+  margin: 0 24px 24px;
+  overflow: initial;
+}
+
+.innerContent {
+  min-height: 100%;
+  //display: flex;
+  //flex: 1;
+  width: 100%;
+  height: auto;
+  background: @white;
+  padding: @card-padding-base;
+  //& > *:first-child {
+  //  flex: 1;
+  //}
+}
+
+.sider {
+  overflow: auto;
+  height: 100%;
+  position: fixed;
+  left: 0;
+}
+
+
+.menuSidebar {
+  position: relative;
+  z-index: 10;
+  min-height: 100vh;
+  box-shadow: 2px 0 6px rgba(0, 21, 41, .35);
+}
+
