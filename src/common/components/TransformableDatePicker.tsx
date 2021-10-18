@@ -1,30 +1,29 @@
 import React, {forwardRef, useCallback, useEffect, useState} from 'react';
-import {DatePickerProps} from 'antd/es/date-picker';
-import moment, {Moment} from 'moment';
-import {DatePicker, TimePicker} from 'antd';
+import {PickerProps} from 'antd/es/date-picker/generatePicker';
 import {PanelMode} from 'rc-picker/lib/interface'
+import DatePicker from './DatePicker';
 
-declare type TransformableDatePickerProps = DatePickerProps & {
-    formatter?: (value: Moment|null) => any|null;
-    parser?: (value: any) => Moment|null;
+declare type TransformableDatePickerProps = PickerProps<Date> & {
+    formatter?: (value: Date|null) => any|null;
+    parser?: (value: any) => Date|null;
     picker?: PanelMode;
 }
 
-const mlsFormatter = (value: Moment|null) => value?.valueOf();
-const mlsParser = (value: any) => value ? moment(value) : value;
+const mlsFormatter = (value: Date|null) => value?.valueOf();
+const mlsParser = (value: any) => value ? new Date(value) : value;
 
 const TransformableDatePicker = forwardRef<any, TransformableDatePickerProps>((props, ref) => {
-    const [realValue, setRealValue] = useState<Moment|null>();
+    const [realValue, setRealValue] = useState<Date|null>();
 
     const {value, onChange, formatter, parser, picker, onSelect, ...others} = props;
 
-    const enhanceOnchange = useCallback((value: Moment|null, dateString: string) => {
+    const enhanceOnchange = useCallback((value: Date|null, dateString: string) => {
         setRealValue(value);
         const formattedValue = (formatter ?? mlsFormatter)(value) ?? value;
         onChange?.(formattedValue, dateString);
     }, [formatter, setRealValue, onChange]);
 
-    const enhanceOnSelect = useCallback((value: Moment| null) => {
+    const enhanceOnSelect = useCallback((value: Date| null) => {
         onSelect?.((formatter ?? mlsFormatter)(value) ?? value);
     }, [formatter, onSelect])
 
@@ -33,20 +32,13 @@ const TransformableDatePicker = forwardRef<any, TransformableDatePickerProps>((p
         setRealValue(parsedValue);
     }, [value, setRealValue, parser]);
 
-    if (picker === 'time') {
-        return <TimePicker onChange={enhanceOnchange}
-                           value={realValue}
-                           ref={ref} {...others}
-                           onSelect={enhanceOnSelect}
-        />
-    }
-
     return (
         <DatePicker onChange={enhanceOnchange}
                     value={realValue}
-                    ref={ref} {...others}
-                    picker={picker === 'date' ? undefined : picker}
+                    ref={ref}
+                    picker={picker}
                     onSelect={enhanceOnSelect}
+                    {...others}
         />
     );
 });

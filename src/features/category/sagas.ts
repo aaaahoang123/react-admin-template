@@ -52,7 +52,7 @@ const sagas = [
             const response: Rest<Category> = yield call(categoryService.single, payload);
             yield put(singleCategoryAdded(response.data, true));
         } else {
-            yield put(categoryFormChanged(new CategoryFormData(), null));
+            yield put(categoryFormChanged(new CategoryFormData(), undefined));
         }
     })),
 

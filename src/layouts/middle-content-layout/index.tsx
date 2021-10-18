@@ -1,9 +1,9 @@
-import {RouterOutlet, WithRouteProps} from 'react-hook-guard';
+import {RouterOutlet} from 'react-hook-guard';
 
-function MiddleContentLayout({route}: WithRouteProps) {
+function MiddleContentLayout(props: any) {
     return (
         <div className="flex align-middle items-center justify-center h-screen flex-col">
-            <RouterOutlet routes={route?.children} />
+            <RouterOutlet {...props} />
         </div>
     );
 }

@@ -10,7 +10,7 @@ i18next
         interpolation: {escapeValue: false},  // React already does escaping
         lng: 'vi',                              // language to use
         fallbackLng: 'en',
-        whitelist: ['vi', 'en'],
+        // whitelist: ['vi', 'en'],
         backend: {
             loadPath: `${APP_PREFIX}/i18n/{{lng}}/{{ns}}.json`,
         }

@@ -15,12 +15,12 @@ import {useAuthorizationGuard} from './features/auth/useAuthorizationGuard';
 
 const appRoutes: Routes<RouteData> = [
     {
-        path: '/auth',
+        path: 'auth',
         component: MiddleContentLayout,
         canActivate: [useGuestGuard],
         children: [
             {
-                path: '/auth/login',
+                path: RouterEnum.login,
                 component: lazy(() => import('./features/auth/login')),
                 data: {
                     title: 'Đăng nhập',
@@ -28,13 +28,13 @@ const appRoutes: Routes<RouteData> = [
                 }
             },
             {
-                path: '/auth',
-                redirectTo: '/auth/login'
+                path: 'auth',
+                redirectTo: RouterEnum.login
             }
         ]
     },
     {
-        path: '/',
+        path: RouterEnum.root,
         component: WithSidebarLayout,
         canActivate: [useAuthenticationGuard],
         canActivateChild: [useAuthorizationGuard],
@@ -53,7 +53,7 @@ const appRoutes: Routes<RouteData> = [
                 }
             },
             {
-                path: '/test',
+                path: 'test',
                 component: lazy(() => import('./features/auth/login')),
                 data: {
                     title: 'Testy',
@@ -61,10 +61,6 @@ const appRoutes: Routes<RouteData> = [
                     menuDisplay: true,
                     icon: DashboardOutlined
                 }
-            },
-            {
-                path: '/',
-                redirectTo: RouterEnum.dashboard,
             }
         ]
     },

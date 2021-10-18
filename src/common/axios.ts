@@ -14,12 +14,14 @@ const JSON_HEADER = 'application/json';
 
 // Add a request interceptor
 axios.interceptors.request.use((config) => {
-
-    config.headers['Content-Type'] = JSON_HEADER;
-    config.headers['Accept'] = JSON_HEADER;
-    config.headers['Authorization'] = 'Bearer ' + localStorage.getItem(AUTH_STORAGE_KEY || '') || '';
+    config.headers = {
+        ...config.headers ?? {},
+        'Content-Type': JSON_HEADER,
+        Accept: JSON_HEADER,
+        Authorization: 'Bearer ' + localStorage.getItem(AUTH_STORAGE_KEY || '') || '',
+    }
     config.transformResponse = [(res, header) => {
-        return ((!header.accept || header.accept === JSON_HEADER) && isString(res))
+        return ((!header?.accept || header.accept === JSON_HEADER) && isString(res))
             ? JSON.parse(res)
             : res;
     }];

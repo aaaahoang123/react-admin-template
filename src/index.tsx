@@ -1,5 +1,4 @@
 import ReactDOM from 'react-dom';
-import './index.less';
 import App from './App';
 import {Router} from 'react-router-dom';
 import history from './config/history';
@@ -15,7 +14,8 @@ import {ConfigProvider, Skeleton} from 'antd';
 import vi from 'antd/es/locale/vi_VN';
 import './config/i18next';
 import './config/antd';
-import 'tailwindcss/tailwind.css';
+import './index.less';
+import './index.scss';
 import hookGuard from 'react-hook-guard';
 
 hookGuard.config({
