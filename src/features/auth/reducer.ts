@@ -1,7 +1,7 @@
 import {createAction, createSlice, PayloadAction} from '@reduxjs/toolkit';
 import AuthState, {LoginFormData} from './state';
 import {User} from '../../models/user';
-import {decode} from 'jsonwebtoken';
+import {decodeToken} from 'react-jwt';
 import {JwtPayload} from '../../common/models/jwt-payload';
 import {PreparedCaseReducer} from '../../common/utils';
 
@@ -18,7 +18,7 @@ const slice = createSlice({
         },
         authTokenChanged: new PreparedCaseReducer<AuthState, string, boolean>((state, {payload, meta: forceUpdate}: PayloadAction<string, string, boolean|undefined>) => {
             if (!state.tokenInfo || forceUpdate) {
-                const tokenInfo = decode(payload || '') as JwtPayload;
+                const tokenInfo = decodeToken(payload || '') as JwtPayload;
                 state.tokenInfo = tokenInfo;
                 state.authenticated = (new Date().valueOf() / 1000) < (tokenInfo?.exp || 0);
             }

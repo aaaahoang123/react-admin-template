@@ -1,17 +1,9 @@
 const CracoLessPlugin = require('craco-less');
-const path = require('path');
+// const webpack = require('webpack')
 
 const lessModifyVars = {};
 
 module.exports = {
-    style: {
-        postcss: {
-            plugins: [
-                require('tailwindcss'),
-                require('autoprefixer'),
-            ],
-        },
-    },
     plugins: [
         {
             plugin: CracoLessPlugin,
@@ -48,6 +40,27 @@ module.exports = {
                 },
             },
         },
-
     ],
+    /**
+     * Config this only when you need nodejs polyfills
+     */
+    // webpack: {
+    //     configure(webpackConfig, {env, path}) {
+    //         webpackConfig.resolve.fallback = {
+    //             ...webpackConfig.resolve.fallback ?? {},
+    //             crypto: require.resolve('crypto-browserify'),
+    //             stream: require.resolve('stream-browserify'),
+    //             buffer: require.resolve('buffer'),
+    //             util: require.resolve('util'),
+    //         };
+    //
+    //         webpackConfig.plugins.push(
+    //             new webpack.ProvidePlugin({
+    //                 process: 'process/browser.js',
+    //                 Buffer: ['buffer', 'Buffer'],
+    //             }),
+    //         );
+    //         return webpackConfig;
+    //     }
+    // }
 };
